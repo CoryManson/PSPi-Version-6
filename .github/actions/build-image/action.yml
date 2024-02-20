@@ -65,8 +65,8 @@ runs:
       shell: bash
 
     - name: Upload files to storage account
-      run: |
-        azcopy login        
+      run: 
+        azcopy login --service-principal     
         for i in $(ls *.img.xz)
         do
           azcopy copy "packer/plugins/packer-builder-arm/$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"
