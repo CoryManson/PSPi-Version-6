@@ -65,7 +65,7 @@ runs:
       shell: bash
 
     - name: Upload files to storage account
-      run: 
+      run: |
         az login --service-principal -u "$env:AZCOPY_SPA_APPLICATION_ID" -p "$env:AZCOPY_SPA_CLIENT_SECRET" --tenant "$env:AZCOPY_TENANT_ID"
         for i in $(ls *.img.xz)
         do
