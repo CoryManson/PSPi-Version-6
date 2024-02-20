@@ -23,7 +23,7 @@ detect_architecture() {
 detect_os_and_setup_services() {
     echo "Operating System Detected: $OS"
     case "$OS" in
-    Debian | Raspios | RetroPie)
+    Debian | Raspios | RetroPie | Kali)
         raspios_setup
         ;;
     Ubuntu)

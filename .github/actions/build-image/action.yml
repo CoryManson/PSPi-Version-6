@@ -63,18 +63,33 @@ runs:
         done
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
+
+    - name: Upload files to storage account
+      run: |
+        azcopy login        
+        for i in $(ls *.img.xz)
+        do
+          azcopy copy "packer/plugins/packer-builder-arm/$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"
+        done
+
+        for i in $(ls *.img.xz.sha256)
+        do
+          azcopy copy "packer/plugins/packer-builder-arm/$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"
+        done
+      working-directory: packer/plugins/packer-builder-arm
+      shell: bash
         
-    - name: Create Release
-      uses: softprops/action-gh-release@v0.1.15
-      with:
-        generate_release_notes: true
-        tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
-        name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}
-        draft: true
-        fail_on_unmatched_files: true
-        files: |
-          packer/plugins/packer-builder-arm/*.img.xz
-          packer/plugins/packer-builder-arm/*.img.xz.sha256
+    # - name: Create Release
+    #   uses: softprops/action-gh-release@v0.1.15
+    #   with:
+    #     generate_release_notes: true
+    #     tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
+    #     name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}
+    #     draft: true
+    #     fail_on_unmatched_files: true
+    #     files: |
+    #       packer/plugins/packer-builder-arm/*.img.xz
+    #       packer/plugins/packer-builder-arm/*.img.xz.sha256
 
       
 

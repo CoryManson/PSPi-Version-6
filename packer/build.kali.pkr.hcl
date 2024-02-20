@@ -59,30 +59,7 @@ build {
       "${path.root}scripts/installers/install-pspi6.sh"
     ]
     env = {
-      "OS" = "Raspios"
+      "OS" = "Kali"
     }
   }
-
-  # Reboot
-  provisioner "shell" {
-    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    expect_disconnect = true
-    inline            = ["echo 'Reboot VM'", "reboot"]
-  }
-
-  # disable the customization dialog, that raspberry pi os will show at boot
-  # provisioner "shell" {
-  #   execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-  #   scripts = [
-  #     "${path.root}scripts/installers/disable-userconfig.sh"
-  #   ]
-  # }
-
-  # Cleanup
-  # provisioner "shell" {
-  #   execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-  #   scripts = [
-  #     "${path.root}scripts/installers/cleanup.sh"
-  #   ]
-  # }  
 }
