@@ -71,7 +71,7 @@ runs:
 
     - name: Upload files to storage account
       run: |
-        az login --service-principal -u "$env:AZCOPY_SPA_APPLICATION_ID" -p "$env:AZCOPY_SPA_CLIENT_SECRET" --tenant "$env:AZCOPY_TENANT_ID"
+        az login --service-principal -u ${{ INPUT_AZCOPY_SPA_APPLICATION_ID }} -p ${{ INPUT_AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ INPUT_AZCOPY_TENANT_ID }}
         for i in $(ls *.img.xz)
         do
           azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"

@@ -21,7 +21,6 @@ jobs:
         uses: ./.github/actions/build-image
         with:
           build: '${{ matrix.os }}.*'
-        env: 
           AZCOPY_TENANT_ID: ${{ vars.AZCOPY_TENANT_ID }}
           AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
           AZCOPY_SPA_APPLICATION_ID: ${{ vars.AZCOPY_SPA_APPLICATION_ID }}
