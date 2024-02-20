@@ -6,7 +6,7 @@ source "arm" "kali_cm4_arm64" {
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
   image_path            = "PSPi6.Kali2023-4.CM4.${var.pspi_version}.img"
-  image_size            = "14G"
+  image_size            = "16G"
   image_type            = "dos"
 
   # configure boot partition
