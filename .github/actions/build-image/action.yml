@@ -13,6 +13,11 @@ runs:
       with:
         fetch-depth: 0
 
+    - name: Az login
+      run: |
+        az login --service-principal -u "$env:AZCOPY_SPA_APPLICATION_ID" -p "$env:AZCOPY_SPA_CLIENT_SECRET" --tenant "$env:AZCOPY_TENANT_ID"
+      shell: bash        
+
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
       with:
