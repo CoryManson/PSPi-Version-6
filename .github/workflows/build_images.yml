@@ -12,7 +12,8 @@ jobs:
     strategy:
       matrix:
         # Resolves to the packer image name
-        os: [batocera, raspios, retropie]
+        os: [kali]
+        # os: [batocera, raspios, retropie, kali]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
