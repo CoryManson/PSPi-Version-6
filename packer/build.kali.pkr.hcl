@@ -79,10 +79,10 @@ build {
   # }
 
   # Cleanup
-  provisioner "shell" {
-    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    scripts = [
-      "${path.root}scripts/installers/cleanup.sh"
-    ]
-  }  
+  # provisioner "shell" {
+  #   execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+  #   scripts = [
+  #     "${path.root}scripts/installers/cleanup.sh"
+  #   ]
+  # }  
 }
