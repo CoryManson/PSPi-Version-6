@@ -13,9 +13,6 @@ inputs:
   AZCOPY_SPA_APPLICATION_ID:
     description: 'Azure Service Principal Application ID'
     required: true
-  AZCOPY_AUTO_LOGIN_TYPE:
-    description: 'Azure Service Principal Auto Login Type'
-    required: true
   
 
 runs:
@@ -24,12 +21,7 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0
-
-    - name: Az login
-      run: |
-        az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
-      shell: bash        
+        fetch-depth: 0       
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
@@ -84,15 +76,17 @@ runs:
 
     - name: Upload files to storage account
       run: |
+        export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
         az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
+
         for i in $(ls *.img.xz)
         do
-          azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"
+          azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
         done
 
         for i in $(ls *.img.xz.sha256)
         do
-          azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"
+          azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
         done
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
