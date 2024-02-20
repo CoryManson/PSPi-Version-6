@@ -66,7 +66,7 @@ runs:
 
     - name: Upload files to storage account
       run: 
-        azcopy login --service-principal     
+        azcopy login --service-principal --application-id ${{ secrets.AZCOPY_SPA_APPLICATION_ID }} --tenant-id ${{ secrets.AZCOPY_TENANT_ID }} --client-secret ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
         for i in $(ls *.img.xz)
         do
           azcopy copy "packer/plugins/packer-builder-arm/$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"
@@ -78,6 +78,11 @@ runs:
         done
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
+      env: 
+        AZCOPY_TENANT_ID: ${{ secrets.AZCOPY_TENANT_ID }}
+        AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
+        AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
+        AZCOPY_AUTO_LOGIN_TYPE: SPN
         
     # - name: Create Release
     #   uses: softprops/action-gh-release@v0.1.15
