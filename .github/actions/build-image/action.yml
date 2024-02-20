@@ -4,6 +4,19 @@ inputs:
   build:
     description: 'Comma seperated list of images to build'
     required: true
+  AZCOPY_TENANT_ID:
+    description: 'Azure Tenant ID'
+    required: true
+  AZCOPY_SPA_CLIENT_SECRET:
+    description: 'Azure Service Principal Client Secret'
+    required: true
+  AZCOPY_SPA_APPLICATION_ID:
+    description: 'Azure Service Principal Application ID'
+    required: true
+  AZCOPY_AUTO_LOGIN_TYPE:
+    description: 'Azure Service Principal Auto Login Type'
+    required: true
+  
 
 runs:
   using: "composite"
@@ -71,7 +84,7 @@ runs:
 
     - name: Upload files to storage account
       run: |
-        az login --service-principal -u ${{ INPUT_AZCOPY_SPA_APPLICATION_ID }} -p ${{ INPUT_AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ INPUT_AZCOPY_TENANT_ID }}
+        az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
         for i in $(ls *.img.xz)
         do
           azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/v${{ steps.gitversion.outputs.majorMinorPatch }}/$i"
