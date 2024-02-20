@@ -78,6 +78,11 @@ runs:
         done
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
+      env: 
+        AZCOPY_TENANT_ID: ${{ vars.AZCOPY_TENANT_ID }}
+        AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
+        AZCOPY_SPA_APPLICATION_ID: ${{ vars.AZCOPY_SPA_APPLICATION_ID }}
+        AZCOPY_AUTO_LOGIN_TYPE: AZCLI
         
     # - name: Create Release
     #   uses: softprops/action-gh-release@v0.1.15
