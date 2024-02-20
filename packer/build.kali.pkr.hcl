@@ -14,19 +14,19 @@ build {
   # }
 
   # Update OS & Install Dependencies
-  provisioner "shell" {
-    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    scripts = [
-      "${path.root}scripts/installers/apt.sh"
-    ]
-  }
+  # provisioner "shell" {
+  #   execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+  #   scripts = [
+  #     "${path.root}scripts/installers/apt.sh"
+  #   ]
+  # }
 
-  # Reboot
-  provisioner "shell" {
-    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    expect_disconnect = true
-    inline            = ["echo 'Reboot VM'", "reboot"]
-  }
+  # # Reboot
+  # provisioner "shell" {
+  #   execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+  #   expect_disconnect = true
+  #   inline            = ["echo 'Reboot VM'", "reboot"]
+  # }
 
   # Upload config.txt
   provisioner "file" {
