@@ -6,7 +6,7 @@ source "arm" "kali_cm4_arm64" {
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
   image_path            = "PSPi6.Kali2023-4.CM4.${var.pspi_version}.img"
-  image_size            = "5G"
+  image_size            = "14G"
   image_type            = "dos"
 
   # configure boot partition
@@ -15,7 +15,7 @@ source "arm" "kali_cm4_arm64" {
     type         = "c"
     start_sector = "2048"
     filesystem   = "vfat"
-    size         = "4G"
+    size         = "255M"
     mountpoint   = "/boot"
   }
 
@@ -23,7 +23,7 @@ source "arm" "kali_cm4_arm64" {
   image_partitions {
     name         = "data"
     type         = "83"
-    start_sector = "8390656"
+    start_sector = "524288"
     filesystem   = "ext4"
     size         = "0"
     mountpoint   = "/"
