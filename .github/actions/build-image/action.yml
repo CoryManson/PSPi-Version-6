@@ -28,7 +28,7 @@ runs:
 
     - name: Az login
       run: |
-        az login --service-principal -u "$env:AZCOPY_SPA_APPLICATION_ID" -p "$env:AZCOPY_SPA_CLIENT_SECRET" --tenant "$env:AZCOPY_TENANT_ID"
+        az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
       shell: bash        
 
     - name: Install GitVersion
