@@ -6,6 +6,13 @@ on:
   pull_request:
     branches:
       - main
+  workflow_run:
+    workflows: ["Build Drivers"]
+    types:
+      - completed
+    branches:
+      - main
+        
 
 jobs:
   build-images:
@@ -16,7 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build & Publish Image
+
+      - name: Build Drivers
+        uses: ./.github/actions/build-drivers
+        with:
+          build: 'drivers.*'
+      
+      - name: Build & Publish Images
         uses: ./.github/actions/build-image
         with:
           build: '${{ matrix.os }}.*'

@@ -50,7 +50,7 @@ raspios_setup() {
 
     enable_i2c
     set_binary_permissions
-    add_services "main osd mouse gamepad"
+    add_services "main osd mouse"
 }
 
 retropie_setup() {
@@ -58,14 +58,14 @@ retropie_setup() {
 
     enable_i2c
     set_binary_permissions
-    add_services "main osd gamepad"
+    add_services "main osd"
 }
 
 ubuntu_setup() {
     echo "Configuring Ubuntu..."
 
     set_binary_permissions
-    add_services "main osd mouse gamepad"
+    add_services "main osd mouse"
 }
 
 lakka_setup() {

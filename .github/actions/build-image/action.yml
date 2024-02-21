@@ -24,6 +24,9 @@ runs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+      
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
 
     - name: Login with azcopy
       run: |
@@ -104,6 +107,8 @@ runs:
         do
           azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
         done
+
+        echo "skipRelease is ${{ inputs.skipRelease }}"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
       
