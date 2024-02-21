@@ -17,7 +17,6 @@ inputs:
     description: 'Azure Service Principal Application ID'
     required: true
   
-
 runs:
   using: "composite"
   steps:
@@ -35,7 +34,7 @@ runs:
         az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
 
         azcopy list "https://stpspiproduseast001.blob.core.windows.net/pspi6/"
-      shell: bash     
+      shell: bash
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
@@ -105,11 +104,13 @@ runs:
         do
           azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
         done
+
+        echo "skipRelease is ${{ inputs.skipRelease }}"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
       
     - name: Create Release
-      if: inputs.skipRelease == 'false'
+      if: ${{ inputs.skipRelease }} == 'false'
       uses: softprops/action-gh-release@v0.1.15
       with:
         generate_release_notes: true
