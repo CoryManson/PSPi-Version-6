@@ -27,12 +27,6 @@ runs:
         go build -v .
       shell: bash
 
-    # - name: Empty driver bin folder
-    #   run: |
-    #     rm -rf $GITHUB_WORKSPACE/rpi/drivers/bin/*
-    #     ls $GITHUB_WORKSPACE/rpi/drivers/bin/
-    #   shell: bash
-
     - name: Build driver image
       run: |
         sudo packer build -only ${{ inputs.build }} "$GITHUB_WORKSPACE/packer/"
@@ -43,25 +37,24 @@ runs:
       run: |
         mv *.tar.gz $RUNNER_TEMP
         cd $RUNNER_TEMP
+        mkdir -p ./drivers
 
         # Extract & rename 32bit drivers
         tar --extract --file=PSPi6.Drivers_32bit.tar.gz ./packer/drivers/bin
-        mv ./packer/drivers/bin ./packer/drivers/bin_32
-        for i in $(ls ./packer/drivers/bin_32)
+        for i in $(ls ./packer/drivers/bin)
         do
-          mv "./packer/drivers/bin_32/$i" "./packer/drivers/bin/${i}_32"
+          mv "./packer/drivers/bin/$i" "./drivers/${i}_32"
         done
 
         # Extract & rename 64bit drivers
         tar --extract --file=PSPi6.Drivers_64bit.tar.gz ./packer/drivers/bin
-        mv ./packer/drivers/bin ./packer/drivers/bin_64
-        for i in $(ls ./packer/drivers/bin_64)
+        for i in $(ls ./packer/drivers/bin)
         do
-          mv "./packer/drivers/bin_64/$i" "./packer/drivers/bin/${i}_64"
+          mv "./packer/drivers/bin/$i" "./drivers/${i}_64"
         done
 
         # Zip drivers
-        zip drivers.zip ./packer/drivers/bin/* -r
+        zip drivers.zip ./drivers/* -r
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
@@ -69,7 +62,7 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: drivers
-        path: ${{ runner.temp }}/packer/drivers/bin/
+        path: ${{ runner.temp }}/drivers/
         if-no-files-found: error
 
     # Create github release
