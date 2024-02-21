@@ -49,7 +49,7 @@ runs:
         mv ./packer/drivers/bin ./packer/drivers/bin_32
         for i in $(ls ./packer/drivers/bin_32)
         do
-          mv "$i" "${i}_32"
+          mv "./packer/drivers/bin_64/$i" "./packer/drivers/bin_64/${i}_32"
         done
         zip drivers_32bit.zip ./packer/drivers/bin_32/* -r
 
@@ -58,7 +58,7 @@ runs:
         mv ./packer/drivers/bin ./packer/drivers/bin_64
         for i in $(ls ./packer/drivers/bin_64)
         do
-          mv "$i" "${i}_64"
+          mv "./packer/drivers/bin_64/$i" "./packer/drivers/bin_64/${i}_64"
         done
         zip drivers_64bit.zip ./packer/drivers/bin_64/* -r
       working-directory: packer/plugins/packer-builder-arm
