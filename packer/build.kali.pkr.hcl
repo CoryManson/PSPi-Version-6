@@ -5,29 +5,6 @@ build {
     "arm.kali_cm4_arm64"
   ]
 
-  # Configure raspberry pi
-  # provisioner "shell" {
-  #   execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-  #   scripts = [
-  #     "${path.root}scripts/installers/config-pi.sh"
-  #   ]
-  # }
-
-  # Update OS & Install Dependencies
-  # provisioner "shell" {
-  #   execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-  #   scripts = [
-  #     "${path.root}scripts/installers/apt.sh"
-  #   ]
-  # }
-
-  # # Reboot
-  # provisioner "shell" {
-  #   execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-  #   expect_disconnect = true
-  #   inline            = ["echo 'Reboot VM'", "reboot"]
-  # }
-
   # Upload config.txt
   provisioner "file" {
     source = "${path.root}/../rpi/configs/kali/config.txt"
