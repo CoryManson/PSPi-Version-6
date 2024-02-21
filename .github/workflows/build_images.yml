@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         # Resolves to the packer image name
-        os: [kali]
+        os: [kali_cm4, kali_zero2]
         # os: [batocera, raspios, retropie, kali]
     runs-on: ubuntu-latest
     steps:
