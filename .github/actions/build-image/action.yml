@@ -4,6 +4,9 @@ inputs:
   build:
     description: 'Comma seperated list of images to build'
     required: true
+  skipRelease:
+    description: 'Skip creating a release'
+    default: 'false'
   AZCOPY_TENANT_ID:
     description: 'Azure Tenant ID'
     required: true
@@ -106,7 +109,7 @@ runs:
       shell: bash
       
     - name: Create Release
-      if: contains(fromJSON('["kali_cm4.*", "kali_zero2.*"]'), inputs.build)
+      if: inputs.skipRelease == 'false'
       uses: softprops/action-gh-release@v0.1.15
       with:
         generate_release_notes: true
