@@ -44,41 +44,32 @@ runs:
         mv *.tar.gz $RUNNER_TEMP
         cd $RUNNER_TEMP
 
-        # Extract 32bit drivers
+        # Extract & rename 32bit drivers
         tar --extract --file=PSPi6.Drivers_32bit.tar.gz ./packer/drivers/bin
         mv ./packer/drivers/bin ./packer/drivers/bin_32
         for i in $(ls ./packer/drivers/bin_32)
         do
-          mv "./packer/drivers/bin_32/$i" "./packer/drivers/bin_32/${i}_32"
+          mv "./packer/drivers/bin_32/$i" "./packer/drivers/bin/${i}_32"
         done
-        zip drivers_32bit.zip ./packer/drivers/bin_32/* -r
 
-        # Extract 64bit drivers
+        # Extract & rename 64bit drivers
         tar --extract --file=PSPi6.Drivers_64bit.tar.gz ./packer/drivers/bin
         mv ./packer/drivers/bin ./packer/drivers/bin_64
         for i in $(ls ./packer/drivers/bin_64)
         do
-          mv "./packer/drivers/bin_64/$i" "./packer/drivers/bin_64/${i}_64"
+          mv "./packer/drivers/bin_64/$i" "./packer/drivers/bin/${i}_64"
         done
-        zip drivers_64bit.zip ./packer/drivers/bin_64/* -r
 
-        ls
-        pwd
+        # Zip drivers
+        zip drivers.zip ./packer/drivers/bin/* -r
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: drivers_32bit
-        path: ${{ runner.temp }}/packer/drivers/bin_32/
-        if-no-files-found: error
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: drivers_64bit
-        path: ${{ runner.temp }}/packer/drivers/bin_64/
+        name: drivers
+        path: ${{ runner.temp }}/packer/drivers/bin/
         if-no-files-found: error
 
     # Create github release
@@ -92,5 +83,4 @@ runs:
         draft: true
         fail_on_unmatched_files: true
         files: |
-          packer/plugins/packer-builder-arm/drivers_32bit.zip
-          packer/plugins/packer-builder-arm/drivers_64bit.zip
+          ${{ runner.temp }}/drivers.zip
