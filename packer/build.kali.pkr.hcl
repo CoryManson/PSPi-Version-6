@@ -2,6 +2,7 @@ build {
   name = "kali"
 
   sources = [
+    "arm.kali_zero2_armhf",
     "arm.kali_cm4_arm64"
   ]
 
