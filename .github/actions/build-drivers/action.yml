@@ -49,7 +49,7 @@ runs:
         mv ./packer/drivers/bin ./packer/drivers/bin_32
         for i in $(ls ./packer/drivers/bin_32)
         do
-          mv "./packer/drivers/bin_64/$i" "./packer/drivers/bin_64/${i}_32"
+          mv "./packer/drivers/bin_32/$i" "./packer/drivers/bin_32/${i}_32"
         done
         zip drivers_32bit.zip ./packer/drivers/bin_32/* -r
 
