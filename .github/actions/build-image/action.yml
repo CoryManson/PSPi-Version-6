@@ -104,8 +104,6 @@ runs:
         do
           azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
         done
-
-        echo "skipRelease is ${{ inputs.skipRelease }}"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
       
