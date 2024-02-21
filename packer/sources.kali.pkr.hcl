@@ -21,7 +21,7 @@ source "arm" "kali_cm4_arm64" {
 
   # configure root partition
   image_partitions {
-    name         = "data"
+    name         = "root"
     type         = "83"
     start_sector = "524288"
     filesystem   = "ext4"

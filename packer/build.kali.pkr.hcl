@@ -30,7 +30,7 @@ build {
 
   # Upload config.txt
   provisioner "file" {
-    source = "${path.root}/../rpi/configs/raspios/config.txt"
+    source = "${path.root}/../rpi/configs/kali/config.txt"
     destination = "/boot/config.txt"
   }
 
