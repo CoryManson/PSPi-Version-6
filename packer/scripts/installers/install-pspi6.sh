@@ -83,13 +83,11 @@ set_binary_permissions() {
     echo "Setting permissions on binaries..."
     case "$ARCH_SUFFIX" in
     _64)
-        chmod +x /usr/bin/gamepad_64
         chmod +x /usr/bin/main_64
         chmod +x /usr/bin/mouse_64
         chmod +x /usr/bin/osd_64
         ;;
     _32)
-        chmod +x /usr/bin/gamepad_32
         chmod +x /usr/bin/main_32
         chmod +x /usr/bin/mouse_32
         chmod +x /usr/bin/osd_32
