@@ -106,7 +106,7 @@ runs:
       shell: bash
       
     - name: Create Release
-      if: ${{ inputs.build }} != "kali_cm4.*" || ${{ inputs.build }} != "kali_zero2.*"
+      if: ${{ inputs.build }} != 'kali_cm4.*' || ${{ inputs.build }} != 'kali_zero2.*'
       uses: softprops/action-gh-release@v0.1.15
       with:
         generate_release_notes: true
