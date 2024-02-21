@@ -2,7 +2,7 @@ name: Build Packer Image
 description: 'Build PSPi image'
 inputs:
   build:
-    description: 'Comma seperated list of images to build'
+    description: 'Comma separated list of images to build'
     required: true
   skipRelease:
     description: 'Skip creating a release'
@@ -20,14 +20,49 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # Checkout repository
     - name: Checkout code
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
       
-    - name: Download Artifact
+    # Download 32 bit driver artifact
+    - name: Download 32bit Drivers
       uses: actions/download-artifact@v4
+      with:
+        name: drivers_32bit
+        path: rpi/drivers/bin
 
+    # Rename driver files to include _32
+    - name: Rename 32bit driver files
+      run: |
+        for i in $(ls)
+        do
+          mv $i $i_32
+        done
+        ls
+      working-directory: rpi/drivers/bin
+      shell: bash
+      
+    # Download 64 bit driver artifact
+    - name: Download 64bit Drivers
+      uses: actions/download-artifact@v4
+      with:
+        name: drivers_64bit
+        path: rpi/drivers/bin
+
+    # Rename driver files to include _64
+    - name: Rename 64bit driver files
+      run: |
+        for i in $(ls)
+        do
+          mv $i $i_64
+        done
+        ls
+      working-directory: rpi/drivers/bin
+      shell: bash
+
+    # Login to az, this step isn't necessary here but it will fail the workflow early if there's issues with the service principal
     - name: Login with azcopy
       run: |
         export AZCOPY_AUTO_LOGIN_TYPE=SPN
@@ -39,21 +74,25 @@ runs:
         azcopy list "https://stpspiproduseast001.blob.core.windows.net/pspi6/"
       shell: bash
 
+    # Install GitVersion
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
       with:
         versionSpec: '5.x'
 
+    # Determine version
     - name: Determine Version
       id:   gitversion
       uses: gittools/actions/gitversion/execute@v0      
 
+    # Install dependencies for packer
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar parted qemu-utils
       shell: bash
 
+    # Install packer arm plugin
     - name: Install packer-builder-arm
       run: |
         mkdir -p $GITHUB_WORKSPACE/packer/plugins
@@ -64,12 +103,14 @@ runs:
         go build -v .
       shell: bash
 
+    # Build images
     - name: Build images
       run: |
         sudo packer build -only ${{ inputs.build }} -var pspi_version=v${{ steps.gitversion.outputs.majorMinorPatch }} "$GITHUB_WORKSPACE/packer/"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
+    # Shrink images
     - name: Shrink images
       run: |
         wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh
@@ -81,6 +122,7 @@ runs:
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
+    # Generate sha256 filehash of image files
     - name: Generate sha256 filehash
       run: |
         for i in $(ls *.img.xz)
@@ -90,6 +132,7 @@ runs:
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
+    # Upload files to azure storage account
     - name: Upload files to storage account
       run: |
         export AZCOPY_AUTO_LOGIN_TYPE=SPN
@@ -111,7 +154,8 @@ runs:
         echo "skipRelease is ${{ inputs.skipRelease }}"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
-      
+
+    # Create github release
     - name: Create Release
       if: ${{ inputs.skipRelease }} == 'false'
       uses: softprops/action-gh-release@v0.1.15

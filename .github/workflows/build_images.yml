@@ -6,13 +6,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_run:
-    workflows: ["Build Drivers"]
-    types:
-      - completed
-    branches:
-      - main
-        
 
 jobs:
   build-images:
