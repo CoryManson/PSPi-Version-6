@@ -61,6 +61,9 @@ runs:
           mv "./packer/drivers/bin_64/$i" "./packer/drivers/bin_64/${i}_64"
         done
         zip drivers_64bit.zip ./packer/drivers/bin_64/* -r
+
+        ls
+        pwd
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
@@ -89,4 +92,5 @@ runs:
         draft: true
         fail_on_unmatched_files: true
         files: |
-          packer/plugins/packer-builder-arm/drivers_*.zip
+          packer/plugins/packer-builder-arm/drivers_32bit.zip
+          packer/plugins/packer-builder-arm/drivers_64bit.zip
