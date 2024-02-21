@@ -21,7 +21,18 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0       
+        fetch-depth: 0      
+
+    - name: Login with azcopy
+      run: |
+        export AZCOPY_AUTO_LOGIN_TYPE=SPN
+        export AZCOPY_SPA_APPLICATION_ID=${{ inputs.AZCOPY_SPA_APPLICATION_ID }}
+        export AZCOPY_SPA_CLIENT_SECRET=${{ inputs.AZCOPY_SPA_CLIENT_SECRET }}
+        export AZCOPY_TENANT_ID=${{ inputs.AZCOPY_TENANT_ID }}
+        az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
+
+        azcopy list "https://stpspiproduseast001.blob.core.windows.net/pspi6/"
+      shell: bash     
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
@@ -76,7 +87,10 @@ runs:
 
     - name: Upload files to storage account
       run: |
-        export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
+        export AZCOPY_AUTO_LOGIN_TYPE=SPN
+        export AZCOPY_SPA_APPLICATION_ID=${{ inputs.AZCOPY_SPA_APPLICATION_ID }}
+        export AZCOPY_SPA_CLIENT_SECRET=${{ inputs.AZCOPY_SPA_CLIENT_SECRET }}
+        export AZCOPY_TENANT_ID=${{ inputs.AZCOPY_TENANT_ID }}
         az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
 
         for i in $(ls *.img.xz)
