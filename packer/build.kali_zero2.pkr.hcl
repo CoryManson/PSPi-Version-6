@@ -1,5 +1,5 @@
 build {
-  name = "kali"
+  name = "kali_zero2"
 
   sources = [
     "arm.kali_zero2_armhf"

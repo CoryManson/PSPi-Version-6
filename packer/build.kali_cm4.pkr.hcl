@@ -1,5 +1,5 @@
 build {
-  name = "kali"
+  name = "kali_cm4"
 
   sources = [
     "arm.kali_cm4_arm64"

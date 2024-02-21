@@ -23,8 +23,11 @@ detect_architecture() {
 detect_os_and_setup_services() {
     echo "Operating System Detected: $OS"
     case "$OS" in
-    Debian | Raspios | RetroPie | Kali)
+    Debian | Raspios | Kali)
         raspios_setup
+        ;;
+    RetroPie)
+        retropie_setup
         ;;
     Ubuntu)
         ubuntu_setup
@@ -43,14 +46,26 @@ unknown_setup() {
 }
 
 raspios_setup() {
+    echo "Configuring RaspiOS..."
+
     enable_i2c
     set_binary_permissions
-    add_services
+    add_services "main osd mouse gamepad"
+}
+
+retropie_setup() {
+    echo "Configuring Retropie..."
+
+    enable_i2c
+    set_binary_permissions
+    add_services "main osd gamepad"
 }
 
 ubuntu_setup() {
+    echo "Configuring Ubuntu..."
+
     set_binary_permissions
-    add_services
+    add_services "main osd mouse gamepad"
 }
 
 lakka_setup() {
@@ -110,7 +125,7 @@ add_services() {
     systemctl daemon-reload
 
     # Enable services
-    for service in main osd mouse gamepad; do
+    for service in $1; do
         systemctl enable ${service}${ARCH_SUFFIX}.service
     done
 
