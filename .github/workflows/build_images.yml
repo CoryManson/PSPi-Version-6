@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build Image
+      - name: Build & Publish Image
         uses: ./.github/actions/build-image
         with:
           build: '${{ matrix.os }}.*'

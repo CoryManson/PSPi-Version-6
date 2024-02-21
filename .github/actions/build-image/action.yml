@@ -104,14 +104,9 @@ runs:
         done
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
-
-    - name: Delete images larger than 2G
-      run: |
-        find -type f \( -name "*img.xz" -o -name "*img.xz.sha256" \) -size +2G -delete
-      working-directory: packer/plugins/packer-builder-arm
-      shell: bash      
-        
+      
     - name: Create Release
+      if: ${{ inputs.build }} != kali_cm4 || ${{ inputs.build }} != kali_zero2
       uses: softprops/action-gh-release@v0.1.15
       with:
         generate_release_notes: true
