@@ -21,6 +21,7 @@ jobs:
         uses: ./.github/actions/build-drivers
         with:
           build: 'drivers.*'
+          createRelease: true
       
       - name: Build & Publish Images
         uses: ./.github/actions/build-image

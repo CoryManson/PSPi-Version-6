@@ -4,6 +4,9 @@ inputs:
   build:
     description: 'Comma seperated list of images to build'
     required: true
+  createRelease:
+    description: 'Create a release'
+    default: 'false'
 
 runs:
   using: "composite"
@@ -24,11 +27,11 @@ runs:
         go build -v .
       shell: bash
 
-    - name: Empty driver bin folder
-      run: |
-        rm -rf $GITHUB_WORKSPACE/rpi/drivers/bin/*
-        ls $GITHUB_WORKSPACE/rpi/drivers/bin/
-      shell: bash
+    # - name: Empty driver bin folder
+    #   run: |
+    #     rm -rf $GITHUB_WORKSPACE/rpi/drivers/bin/*
+    #     ls $GITHUB_WORKSPACE/rpi/drivers/bin/
+    #   shell: bash
 
     - name: Build driver image
       run: |
@@ -42,8 +45,18 @@ runs:
         cd $RUNNER_TEMP
         tar --extract --file=PSPi6.Drivers_32bit.tar.gz ./packer/drivers/bin
         mv ./packer/drivers/bin ./packer/drivers/bin_32
+        for i in $(ls ./packer/drivers/bin_32)
+        do
+          mv $i $i_32
+        done
+        zip drivers_32bit.zip ./packer/drivers/bin_32/* -r
         tar --extract --file=PSPi6.Drivers_64bit.tar.gz ./packer/drivers/bin
         mv ./packer/drivers/bin ./packer/drivers/bin_64
+        for i in $(ls ./packer/drivers/bin_64)
+        do
+          mv $i $i_64
+        done
+        zip drivers_64bit.zip ./packer/drivers/bin_64/* -r
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
@@ -60,3 +73,16 @@ runs:
         name: drivers_64bit
         path: ${{ runner.temp }}/packer/drivers/bin_64/
         if-no-files-found: error
+
+    # Create github release
+    - name: Create Release
+      if: ${{ inputs.createRelease }} == 'true'
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        generate_release_notes: true
+        tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
+        name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}
+        draft: true
+        fail_on_unmatched_files: true
+        files: |
+          packer/plugins/packer-builder-arm/drivers_*.zip

@@ -26,41 +26,12 @@ runs:
       with:
         fetch-depth: 0
       
-    # Download 32 bit driver artifact
+    # Download driver artifacts
     - name: Download 32bit Drivers
       uses: actions/download-artifact@v4
       with:
-        name: drivers_32bit
         path: rpi/drivers/bin
-
-    # Rename driver files to include _32
-    - name: Rename 32bit driver files
-      run: |
-        for i in $(ls)
-        do
-          mv $i $i_32
-        done
-        ls
-      working-directory: rpi/drivers/bin
-      shell: bash
-      
-    # Download 64 bit driver artifact
-    - name: Download 64bit Drivers
-      uses: actions/download-artifact@v4
-      with:
-        name: drivers_64bit
-        path: rpi/drivers/bin
-
-    # Rename driver files to include _64
-    - name: Rename 64bit driver files
-      run: |
-        for i in $(ls)
-        do
-          mv $i $i_64
-        done
-        ls
-      working-directory: rpi/drivers/bin
-      shell: bash
+        merge-multiple: true
 
     # Login to az, this step isn't necessary here but it will fail the workflow early if there's issues with the service principal
     - name: Login with azcopy
@@ -155,8 +126,8 @@ runs:
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
-    # Create github release
-    - name: Create Release
+    # Update github release
+    - name: Update Release
       if: ${{ inputs.skipRelease }} == 'false'
       uses: softprops/action-gh-release@v0.1.15
       with:
