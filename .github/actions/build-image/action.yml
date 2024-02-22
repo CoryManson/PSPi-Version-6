@@ -4,9 +4,6 @@ inputs:
   build:
     description: 'Comma separated list of images to build'
     required: true
-  skipRelease:
-    description: 'Skip creating a release'
-    default: 'false'
   AZCOPY_TENANT_ID:
     description: 'Azure Tenant ID'
     required: true
@@ -121,10 +118,38 @@ runs:
         do
           azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
         done
-
-        echo "skipRelease is ${{ inputs.skipRelease }}"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
+
+    # Delete images larger than 2GB and set skipRelease flag
+    - name: Cleanup large images
+      id: cleanup-images
+      run: |
+        find -type f -name "*img.xz" -size +2G -delete
+        if [$(find -type f -name "*.xz" | wc -l) = 0]
+        then
+          echo "No images to add to release"
+          echo "skipRelease=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "Found images to add to release"
+          echo "skipRelease=false" >> "$GITHUB_OUTPUT"
+        fi
+      working-directory: ${{ runner.temp }}
+      shell: bash
+
+    # Update github release
+    - name: Update Release
+      if: ${{ steps.cleanup-images.outputs.skipRelease }} == 'false'
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        generate_release_notes: true
+        tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
+        name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}
+        draft: true
+        fail_on_unmatched_files: true
+        files: |
+          packer/plugins/packer-builder-arm/*.img.xz
+          packer/plugins/packer-builder-arm/*.img.xz.sha256
 
       
 
