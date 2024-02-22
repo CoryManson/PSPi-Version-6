@@ -13,6 +13,9 @@ inputs:
   AZCOPY_SPA_APPLICATION_ID:
     description: 'Azure Service Principal Application ID'
     required: true
+  AZCOPY_STORAGE_ACCOUNT_NAME:
+    description: 'Azure Storage Account Name'
+    required: true
   
 runs:
   using: "composite"
@@ -108,39 +111,45 @@ runs:
         export AZCOPY_SPA_CLIENT_SECRET=${{ inputs.AZCOPY_SPA_CLIENT_SECRET }}
         export AZCOPY_TENANT_ID=${{ inputs.AZCOPY_TENANT_ID }}
         az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
+        
+        # Create container
+        azcopy make "https://${{ inputs.AZCOPY_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/pspi6/"
 
         for i in $(ls *.img.xz)
         do
-          azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
+          azcopy copy "$i" "https://${{ inputs.AZCOPY_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/pspi6/$i"
         done
 
         for i in $(ls *.img.xz.sha256)
         do
-          azcopy copy "$i" "https://stpspiproduseast001.blob.core.windows.net/pspi6/$i"
+          azcopy copy "$i" "https://${{ inputs.AZCOPY_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/pspi6/$i"
         done
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
     # Delete images larger than 2GB and set skipRelease flag
-    - name: Cleanup large images
-      id: cleanup-images
+    - name: delete large images
+      id: delete-large-images
       run: |
+        # Delete images larger than 2G
         find -type f -name "*img.xz" -size +2G -delete
+
+        # Skip updating github release if there's no longer any images to add
         count="$(find -type f -name "*.xz" | wc -l)"
         if [ "$count" == "0" ]
         then
           echo "No images to add to release"
-          echo "skipRelease=true" >> "$GITHUB_OUTPUT"
+          echo "SKIP_RELEASE=true" >> "$GITHUB_OUTPUT"
         else
           echo "Found images to add to release"
-          echo "skipRelease=false" >> "$GITHUB_OUTPUT"
+          echo "SKIP_RELEASE=false" >> "$GITHUB_OUTPUT"
         fi
-      working-directory: ${{ runner.temp }}
+      working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
     # Update github release
     - name: Update Release
-      if: ${{ steps.cleanup-images.outputs.skipRelease }} == 'false'
+      if: steps.delete-large-images.outputs.SKIP_RELEASE == 'false'
       uses: softprops/action-gh-release@v0.1.15
       with:
         generate_release_notes: true
