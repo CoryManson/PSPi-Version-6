@@ -126,7 +126,7 @@ runs:
       id: cleanup-images
       run: |
         find -type f -name "*img.xz" -size +2G -delete
-        if [$(find -type f -name "*.xz" | wc -l) = 0]
+        if [ $(find -type f -name "*.xz" | wc -l) = 0 ]
         then
           echo "No images to add to release"
           echo "skipRelease=true" >> "$GITHUB_OUTPUT"
