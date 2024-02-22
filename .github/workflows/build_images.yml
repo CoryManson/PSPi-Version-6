@@ -43,7 +43,7 @@ jobs:
 
       # Update github release
       - name: Update Release
-        if: matrix.os != 'kali_cm4' || matrix.os != 'kali_zero2'
+        if: ${{ matrix.os != 'kali_cm4' }} || ${{ matrix.os != 'kali_zero2' }}
         uses: softprops/action-gh-release@v0.1.15
         with:
           generate_release_notes: true
