@@ -126,20 +126,6 @@ runs:
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
-    # Update github release
-    - name: Update Release
-      if: ${{ inputs.skipRelease }} == 'false'
-      uses: softprops/action-gh-release@v0.1.15
-      with:
-        generate_release_notes: true
-        tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
-        name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}
-        draft: true
-        fail_on_unmatched_files: true
-        files: |
-          packer/plugins/packer-builder-arm/*.img.xz
-          packer/plugins/packer-builder-arm/*.img.xz.sha256
-
       
 
       

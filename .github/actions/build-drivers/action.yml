@@ -10,13 +10,32 @@ inputs:
 
 runs:
   using: "composite"
-  steps:   
+  steps:
+    # Checkout repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install GitVersion
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
+
+    # Determine version
+    - name: Determine Version
+      id:   gitversion
+      uses: gittools/actions/gitversion/execute@v0 
+
+    # Install packer dependencies
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar parted qemu-utils
       shell: bash
 
+    # Install packer arm plugin
     - name: Install packer-builder-arm
       run: |
         mkdir -p $GITHUB_WORKSPACE/packer/plugins
@@ -27,12 +46,14 @@ runs:
         go build -v .
       shell: bash
 
+    # Build driver image
     - name: Build driver image
       run: |
         sudo packer build -only ${{ inputs.build }} "$GITHUB_WORKSPACE/packer/"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
+    # Extract drivers from image & zip for release
     - name: Extract drivers from image
       run: |
         mv *.tar.gz $RUNNER_TEMP
@@ -58,6 +79,7 @@ runs:
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
+    # Upload drivers as artifact
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
