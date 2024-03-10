@@ -91,8 +91,9 @@ source "arm" "batocera38_cm4_arm64_base" {
   qemu_binary_destination_path = "/usr/bin/qemu-aarch64-static"
 }
 
-source "arm" "batocera39_cm4_arm64_base" {
-  file_urls             = ["https://updates.batocera.org/bcm2711/stable/last/batocera-bcm2711-bcm2711-39-20240228.img.gz"]
+source "arm" "batocera39_cm4_arm64_base" { 
+  file_urls             = ["https://stpspiproduseast001.blob.core.windows.net/pspi6/batocera-bcm2711-bcm2711-39-20240228.img.gz"]
+  # file_urls             = ["https://updates.batocera.org/bcm2711/stable/last/batocera-bcm2711-bcm2711-39-20240228.img.gz"]
   file_checksum_url     = "https://mirrors.o2switch.fr/batocera/bcm2711/stable/last/batocera-bcm2711-bcm2711-39-20240228.img.gz.sha256"
   file_checksum_type    = "sha256"
   file_target_extension = "gz"
