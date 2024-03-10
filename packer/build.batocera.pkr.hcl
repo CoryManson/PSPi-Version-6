@@ -7,9 +7,10 @@ build {
     # "arm.batocera_zero2_arm64_base",
     # "arm.batocera_cm4_arm64_base",
     ####
-    # "arm.batocera_zero_arm",
-    # "arm.batocera_zero2_arm64",
-    "arm.batocera_cm4_arm64"
+    # "arm.batocera36_zero_arm",
+    # "arm.batocera36_zero2_arm64",
+    # "arm.batocera36_cm4_arm64",
+    "arm.batocera39_cm4_arm64"
   ]
 
   # Upload config.txt
@@ -29,7 +30,8 @@ build {
     only = [
       "batocera.arm.batocera_zero_arm", 
       "batocera.arm.batocera_zero2_arm64", 
-      "batocera.arm.batocera.cm4_arm64"
+      "batocera.arm.batocera.cm4_arm64",
+      "arm.batocera39_cm4_arm64"
     ]
     source = "${path.root}/../rpi/drivers/bin/"
     destination = "/boot/drivers"
@@ -40,7 +42,8 @@ build {
     only = [
       "batocera.arm.batocera_zero_arm", 
       "batocera.arm.batocera_zero2_arm64", 
-      "batocera.arm.batocera.cm4_arm64"
+      "batocera.arm.batocera.cm4_arm64",
+      "arm.batocera39_cm4_arm64"
     ]
     source = "${path.root}/../rpi/scripts/batocera/custom.sh"
     destination = "/userdata/system/custom.sh"
@@ -51,7 +54,8 @@ build {
     only = [
       "batocera.arm.batocera_zero_arm", 
       "batocera.arm.batocera_zero2_arm64", 
-      "batocera.arm.batocera.cm4_arm64"
+      "batocera.arm.batocera.cm4_arm64",
+      "arm.batocera39_cm4_arm64"
     ]
     source = "${path.root}/../rpi/scripts/batocera/resize.sh"
     destination = "/userdata/system/resize.sh"
@@ -62,7 +66,8 @@ build {
     only = [
       "batocera.arm.batocera_zero_arm", 
       "batocera.arm.batocera_zero2_arm64", 
-      "batocera.arm.batocera.cm4_arm64"
+      "batocera.arm.batocera.cm4_arm64",
+      "arm.batocera39_cm4_arm64"
     ]
     source = "${path.root}/../rpi/configs/batocera/multimedia_keys.conf"
     destination = "/userdata/system/configs/multimedia_keys.conf"
