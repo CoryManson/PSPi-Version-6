@@ -6,12 +6,12 @@ build {
     # "arm.batocera36_zero_arm_base",
     # "arm.batocera36_zero2_arm64_base",
     # "arm.batocera38_cm4_arm64_base",
-    "arm.batocera39_cm4_arm64_base"
+    # "arm.batocera39_cm4_arm64_base"
     ####
     # "arm.batocera36_zero_arm",
     # "arm.batocera36_zero2_arm64",
-    # "arm.batocera38_cm4_arm64",
-    # "arm.batocera39_cm4_arm64"
+    "arm.batocera38_cm4_arm64",
+    "arm.batocera39_cm4_arm64"
   ]
 
   # Upload config.txt
