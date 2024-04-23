@@ -42,8 +42,7 @@ runs:
         mkdir -p downloads
         mkdir -p images
         cd downloads
-        # wget -O recalbox-rpi4_64.img.xz "https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz&checksum=md503A0346EA505B55EF0D3177A02630D51B4F"
-        wget -O recalbox-rpi4_64.img.xz "https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz"
+        wget -O -nv recalbox-rpi4_64.img.xz "https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz"
         unxz recalbox-rpi4_64.img.xz
         mv recalbox-rpi4_64.img ../images/
       working-directory: ${{ runner.temp }}
@@ -52,6 +51,7 @@ runs:
     # Inject pspi files into recalbox
     - name: Inject files into recalbox
       run: |
+        set +x
         mkdir -p completed_images
         cd images
         for i in $(ls *.img)
@@ -83,22 +83,12 @@ runs:
           sudo cp filesystem.squashfs /mnt/rootfs/boot/recalbox
           # Unmount image
           sudo umount /mnt/rootfs
+          # Recompress image
+          xz -z "$i"
           # Copy image to completed_images
-          cp $i ../completed_images/
+          cp "$i.xz" ../completed_images/
         done
       working-directory: ${{ runner.temp }}
-      shell: bash
-
-    # Shrink images
-    - name: Shrink images
-      run: |
-        wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh
-        chmod +x pishrink.sh
-        for i in $(ls *.img)
-        do
-          sudo ./pishrink.sh -v -Z -a "$i"
-        done
-      working-directory: ${{ runner.temp }}/completed_images
       shell: bash
 
     # Generate sha256 filehash of image files
