@@ -42,7 +42,7 @@ runs:
         mkdir -p downloads
         mkdir -p images
         cd downloads
-        wget https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz?archive=false&checksum=md5%3A0346EA505B55EF0D3177A02630D51B4F -O recalbox-rpi4_64.img.xz
+        curl -o recalbox-rpi4_64.img.xz https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz?archive=false&checksum=md503A0346EA505B55EF0D3177A02630D51B4F
         unxz recalbox-rpi4_64.img.xz
         mv recalbox-rpi4_64.img ../images/
       working-directory: ${{ runner.temp }}
