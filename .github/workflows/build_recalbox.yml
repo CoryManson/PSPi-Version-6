@@ -18,8 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Build Drivers
         uses: ./.github/actions/build-drivers
@@ -32,6 +30,8 @@ jobs:
     needs: build-drivers
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Download driver artifacts
       - name: Download Drivers
