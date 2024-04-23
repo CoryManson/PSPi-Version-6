@@ -11,11 +11,11 @@ runs:
         fetch-depth: 0
       
     # Download driver artifacts
-    # - name: Download Drivers
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     path: rpi/drivers/bin
-    #     merge-multiple: true
+    - name: Download Drivers
+      uses: actions/download-artifact@v4
+      with:
+        path: rpi/drivers/bin
+        merge-multiple: true
 
     # Install GitVersion
     - name: Install GitVersion
@@ -63,7 +63,7 @@ runs:
           sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/recalbox-user-config.txt
           sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
           sudo mkdir -p /mnt/rootfs/drivers
-          #sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+          sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
           echo "Copy recalbox squashfs to working directory"
           sudo cp /mnt/rootfs/boot/recalbox ./recalbox
           echo "Unpack recalbox squashfs"
