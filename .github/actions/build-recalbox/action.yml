@@ -51,42 +51,43 @@ runs:
     # Inject pspi files into recalbox
     - name: Inject files into recalbox
       run: |
-        set +x
         mkdir -p completed_images
         cd images
         for i in $(ls *.img)
         do
-          # Make mount directory and mount image
+          echo "Make mount directory and mount image"
           sudo mkdir -p /mnt/rootfs
           sudo mount -o loop,offset=$((512*2048)) "$i" /mnt/rootfs
-          # Add files to /boot
+          echo "Add files to /boot"
           sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/rootfs/config.txt
           sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/recalbox-user-config.txt
           sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
           sudo mkdir -p /mnt/rootfs/drivers
           #sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
-          # Copy recalbox squashfs to working directory
+          echo "Copy recalbox squashfs to working directory"
           sudo cp /mnt/rootfs/boot/recalbox ./recalbox
-          # Unpack recalbox squashfs
+          echo "Unpack recalbox squashfs"
           unsquashfs recalbox
-          # Add custom.sh to recalbox
+          echo "Add custom.sh to recalbox"
           cp $GITHUB_WORKSPACE/rpi/scripts/recalbox/custom.sh ./squashfs-root/recalbox/share_init/system/custom.sh
           chmod +x ./squashfs-root/recalbox/share_init/system/custom.sh
-          # Update S12populateshare to copy custom.sh into system at boot
+          echo "Update S12populateshare to copy custom.sh into system at boot"
           sed -i "`wc -l < ./squashfs-root/etc/init.d/S12populateshare`i\\# copy pspi custom.sh\\" ./squashfs-root/etc/init.d/S12populateshare
           sed -i "`wc -l < ./squashfs-root/etc/init.d/S12populateshare`i\\cp "$IN/system/custom.sh" "$OUT/system/custom.sh"\\" ./squashfs-root/etc/init.d/S12populateshare
-          # Add driver libraries
+          echo "Add driver libraries"
           cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* ./squashfs-root/usr/lib/
-          # Repack recalbox squashfs
+          echo "Repack recalbox squashfs"
           mksquashfs squashfs-root filesystem.squashfs -comp xz
-          # Copy recalbox squashfs back to image
+          echo "Copy recalbox squashfs back to image"
           sudo cp filesystem.squashfs /mnt/rootfs/boot/recalbox
-          # Unmount image
+          echo "Unmount image"
           sudo umount /mnt/rootfs
-          # Recompress image
+          echo "Recompress image"
           xz -z "$i"
-          # Copy image to completed_images
-          cp "$i.xz" ../completed_images/
+          echo "Rename image"
+          mv "$i.xz" "PSPi6.Recalbox9.1.CM4.img.xz"
+          echo "Move image to completed_images"
+          mv "PSPi6.Recalbox9.1.CM4.img.xz" ../completed_images/
         done
       working-directory: ${{ runner.temp }}
       shell: bash
