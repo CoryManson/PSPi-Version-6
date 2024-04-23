@@ -60,11 +60,11 @@ runs:
           sudo mkdir -p /mnt/rootfs
           sudo mount -o loop,offset=$((512*2048)) "$i" /mnt/rootfs
           # Add files to /boot
-          sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/rootfs/boot/config.txt
-          sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/boot/recalbox-user-config.txt
-          sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/boot/overlays/
-          mkdir -p /mnt/rootfs/boot/drivers
-          #sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/boot/drivers/
+          sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/rootfs/config.txt
+          sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/recalbox-user-config.txt
+          sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
+          mkdir -p /mnt/rootfs/drivers
+          #sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
           # Copy recalbox squashfs to working directory
           sudo cp /mnt/rootfs/boot/recalbox ./recalbox
           # Unpack recalbox squashfs
