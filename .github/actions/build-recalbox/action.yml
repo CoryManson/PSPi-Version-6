@@ -11,11 +11,11 @@ runs:
         fetch-depth: 0
       
     # Download driver artifacts
-    - name: Download Drivers
-      uses: actions/download-artifact@v4
-      with:
-        path: rpi/drivers/bin
-        merge-multiple: true
+    # - name: Download Drivers
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     path: rpi/drivers/bin
+    #     merge-multiple: true
 
     # Install GitVersion
     - name: Install GitVersion
@@ -42,7 +42,7 @@ runs:
         mkdir -p downloads
         mkdir -p images
         cd downloads
-        curl -o recalbox-rpi4_64.img.xz https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz&checksum=md503A0346EA505B55EF0D3177A02630D51B4F
+        curl -o recalbox-rpi4_64.img.xz "https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz&checksum=md503A0346EA505B55EF0D3177A02630D51B4F"
         unxz recalbox-rpi4_64.img.xz
         mv recalbox-rpi4_64.img ../images/
       working-directory: ${{ runner.temp }}
@@ -63,7 +63,7 @@ runs:
           sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/boot/recalbox-user-config.txt
           sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/boot/overlays/
           mkdir -p /mnt/rootfs/boot/drivers
-          sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/boot/drivers/
+          #sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/boot/drivers/
           # Copy recalbox squashfs to working directory
           sudo cp /mnt/rootfs/boot/recalbox ./recalbox
           # Unpack recalbox squashfs
