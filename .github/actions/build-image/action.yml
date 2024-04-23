@@ -27,7 +27,7 @@ runs:
         fetch-depth: 0
       
     # Download driver artifacts
-    - name: Download 32bit Drivers
+    - name: Download Drivers
       uses: actions/download-artifact@v4
       with:
         path: rpi/drivers/bin
@@ -87,7 +87,7 @@ runs:
       run: |
         for i in $(ls *.img)
         do
-          mkdir -p /mnt/rootfs
+          sudo mkdir -p /mnt/rootfs
           sudo mount -o loop,offset=4194304 "$i" /mnt/rootfs
           sudo cp /mnt/rootfs/boot/recalbox /tmp/
           cd /tmp
