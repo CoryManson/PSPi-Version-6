@@ -60,7 +60,7 @@ runs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar parted qemu-utils
+        sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar parted qemu-utils squashfs-tools -y
       shell: bash
 
     # Install packer arm plugin
@@ -78,6 +78,29 @@ runs:
     - name: Build images
       run: |
         sudo packer build -only ${{ inputs.build }} -var pspi_version=v${{ steps.gitversion.outputs.majorMinorPatch }} "$GITHUB_WORKSPACE/packer/"
+      working-directory: packer/plugins/packer-builder-arm
+      shell: bash
+
+    # Inject files into recalbox
+    - name: Inject files into recalbox
+      if: inputs.build == 'recalbox.*'
+      run: |
+        for i in $(ls *.img)
+        do
+          mkdir -p /mnt/rootfs
+          sudo mount -o loop,offset=4194304 "$i" /mnt/rootfs
+          sudo cp /mnt/rootfs/boot/recalbox /tmp/
+          cd /tmp
+          unsquashfs recalbox
+          cp $GITHUB_WORKSPACE/rpi/scripts/recalbox/custom.sh ./squashfs-root/recalbox/share_init/system/custom.sh
+          chmod +x ./squashfs-root/recalbox/share_init/system/custom.sh
+          sed -i "`wc -l < ./squashfs-root/etc/init.d/S12populateshare`i\\# copy pspi custom.sh\\" ./squashfs-root/etc/init.d/S12populateshare
+          sed -i "`wc -l < ./squashfs-root/etc/init.d/S12populateshare`i\\cp "$IN/system/custom.sh" "$OUT/system/custom.sh"\\" ./squashfs-root/etc/init.d/S12populateshare
+          cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* ./squashfs-root/usr/lib/
+          mksquashfs squashfs-root filesystem.squashfs -comp xz
+          sudo cp filesystem.squashfs /mnt/rootfs/boot/recalbox
+          sudo umount /mnt/rootfs
+        done
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 

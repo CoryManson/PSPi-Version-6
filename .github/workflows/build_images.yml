@@ -29,7 +29,8 @@ jobs:
     strategy:
       matrix:
         # Resolves to the packer image name
-        os: [batocera, raspios, retropie, kali_cm4, kali_zero2]
+        # os: [batocera, raspios, retropie, kali_cm4, kali_zero2, recalbox]
+        os: [recalbox]
     runs-on: ubuntu-latest
     needs: build-drivers
     steps:
