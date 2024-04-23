@@ -58,7 +58,7 @@ runs:
         do
           # Make mount directory and mount image
           sudo mkdir -p /mnt/rootfs
-          sudo mount -o loop,offset=4194304 "$i" /mnt/rootfs
+          sudo mount -o loop,offset=$((512*2048)) "$i" /mnt/rootfs
           # Add files to /boot
           sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/rootfs/boot/config.txt
           sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/boot/recalbox-user-config.txt
