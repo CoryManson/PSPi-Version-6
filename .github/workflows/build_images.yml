@@ -27,7 +27,7 @@ jobs:
         with:
           build: 'drivers.*'
           createRelease: true
-  build-images:
+  build-packer-images:
     strategy:
       matrix:
         # Resolves to the packer image name
