@@ -58,15 +58,15 @@ runs:
           echo "Make mount directory and mount image"
           sudo losetup -Pf Lakka-RPi4.aarch64-5.0.img
           sudo losetup -l
-          sudo mkdir /mnt/loop0p1
-          sudo mount /dev/loop0p1 /mnt/loop0p1
+          sudo mkdir /mnt/loop3p1
+          sudo mount /dev/loop3p1 /mnt/loop3p1
           echo "Add files to /boot"
-          sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/loop0p1/config.txt
-          sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/loop0p1/overlays/
-          sudo mkdir -p /mnt/loop0p1/drivers
-          # sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/loop0p1/drivers/
+          sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/loop3p1/config.txt
+          sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/loop3p1/overlays/
+          sudo mkdir -p /mnt/loop3p1/drivers
+          # sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/loop3p1/drivers/
           echo "Copy squashfs to working directory"
-          cp /mnt/loop0p1/SYSTEM ./SYSTEM
+          cp /mnt/loop3p1/SYSTEM ./SYSTEM
           echo "Unpack SYSTEM squashfs"
           unsquashfs SYSTEM
           echo "Add custom.sh"
@@ -77,7 +77,7 @@ runs:
           echo "Repack recalbox squashfs"
           mksquashfs squashfs-root filesystem.squashfs -comp xz
           echo "Copy recalbox squashfs back to image"
-          sudo cp filesystem.squashfs /mnt/loop0p1/SYSTEM
+          sudo cp filesystem.squashfs /mnt/loop3p1/SYSTEM
           echo "Unmount image"
           sudo losetup -d /dev/loop0
           echo "Recompress image"
