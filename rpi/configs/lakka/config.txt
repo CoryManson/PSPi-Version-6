@@ -48,9 +48,6 @@ hdmi_ignore_edid_audio=1
 #enable the real time clock
 dtoverlay=i2c-rtc,pcf8563
 
-# Automatically load overlays for detected DSI displays
-display_auto_detect=1
-
 #Configure DPI signal
 framebuffer_width=800
 framebuffer_height=480
