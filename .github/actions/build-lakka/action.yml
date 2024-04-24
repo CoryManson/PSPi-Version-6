@@ -69,9 +69,11 @@ runs:
           cp /mnt/loop3p1/SYSTEM ./SYSTEM
           echo "Unpack SYSTEM squashfs"
           unsquashfs SYSTEM
-          echo "Add custom.sh"
+          echo "Add autostart.sh"
           cp $GITHUB_WORKSPACE/rpi/scripts/lakka/autostart_64.sh ./squashfs-root/usr/config/autostart.sh
           chmod +x ./squashfs-root/usr/config/autostart.sh
+          echo "Add joypad autoconfig"
+          cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg ./squashfs-root/etc/retroarch-joypad-autoconfig/udev/PSPi-Controller.cfg
           echo "Repack squashfs"
           mksquashfs squashfs-root filesystem.squashfs -comp xz
           echo "Copy squashfs back to image"
