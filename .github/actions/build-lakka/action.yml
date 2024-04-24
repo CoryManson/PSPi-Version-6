@@ -11,11 +11,11 @@ runs:
         fetch-depth: 0
       
     # Download driver artifacts
-    # - name: Download Drivers
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     path: rpi/drivers/bin
-    #     merge-multiple: true
+    - name: Download Drivers
+      uses: actions/download-artifact@v4
+      with:
+        path: rpi/drivers/bin
+        merge-multiple: true
 
     # Install GitVersion
     - name: Install GitVersion
@@ -48,8 +48,8 @@ runs:
       working-directory: ${{ runner.temp }}
       shell: bash
 
-    # Inject pspi files into recalbox
-    - name: Inject files into recalbox
+    # Inject required pspi files into image
+    - name: Inject files into lakka image
       run: |
         mkdir -p completed_images
         cd images
@@ -72,20 +72,16 @@ runs:
           echo "Add custom.sh"
           cp $GITHUB_WORKSPACE/rpi/scripts/lakka/autostart_64.sh ./squashfs-root/usr/config/autostart.sh
           chmod +x ./squashfs-root/usr/config/autostart.sh
-          echo "Add driver libraries"
-          # cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* ./squashfs-root/usr/lib/
-          echo "Repack recalbox squashfs"
+          echo "Repack squashfs"
           mksquashfs squashfs-root filesystem.squashfs -comp xz
-          echo "Copy recalbox squashfs back to image"
+          echo "Copy squashfs back to image"
           sudo cp filesystem.squashfs /mnt/loop3p1/SYSTEM
           echo "Unmount image"
           sudo losetup -d /dev/loop0
           echo "Recompress image"
           xz -z "$i"
-          echo "Rename image"
-          mv "$i.xz" "PSPi6.Lakka5.CM4.img.xz"
-          echo "Move image to completed_images"
-          mv "PSPi6.Lakka5.CM4.img.xz" ../completed_images/
+          echo "Move image to completed_images and rename"
+          mv "$i.xz" ../completed_images/PSPi6.Lakka5.CM4.v${{ steps.gitversion.outputs.majorMinorPatch }}.img.xz
         done
       working-directory: ${{ runner.temp }}
       shell: bash

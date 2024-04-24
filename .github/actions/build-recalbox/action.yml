@@ -65,9 +65,9 @@ runs:
           sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
           sudo mkdir -p /mnt/rootfs/drivers
           sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
-          echo "Copy recalbox squashfs to working directory"
+          echo "Copy squashfs to working directory"
           sudo cp /mnt/rootfs/boot/recalbox ./recalbox
-          echo "Unpack recalbox squashfs"
+          echo "Unpack squashfs"
           unsquashfs recalbox
           echo "Add custom.sh to recalbox"
           cp $GITHUB_WORKSPACE/rpi/scripts/recalbox/custom.sh ./squashfs-root/recalbox/share_init/system/custom.sh
@@ -77,18 +77,16 @@ runs:
           sed -i "`wc -l < ./squashfs-root/etc/init.d/S12populateshare`i\\cp "/recalbox/share_init/system/custom.sh" "/recalbox/share/system/custom.sh"\\" ./squashfs-root/etc/init.d/S12populateshare
           echo "Add driver libraries"
           cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* ./squashfs-root/usr/lib/
-          echo "Repack recalbox squashfs"
+          echo "Repack squashfs"
           mksquashfs squashfs-root filesystem.squashfs -comp xz
-          echo "Copy recalbox squashfs back to image"
+          echo "Copy squashfs back to image"
           sudo cp filesystem.squashfs /mnt/rootfs/boot/recalbox
           echo "Unmount image"
           sudo umount /mnt/rootfs
           echo "Recompress image"
           xz -z "$i"
-          echo "Rename image"
-          mv "$i.xz" "PSPi6.Recalbox9.1.CM4.img.xz"
-          echo "Move image to completed_images"
-          mv "PSPi6.Recalbox9.1.CM4.img.xz" ../completed_images/
+          echo "Move image to completed_images & rename"
+          mv "$i.xz" ../completed_images/PSPi6.Recalbox9.1.CM4.v${{ steps.gitversion.outputs.majorMinorPatch }}.img.xz
         done
       working-directory: ${{ runner.temp }}
       shell: bash
