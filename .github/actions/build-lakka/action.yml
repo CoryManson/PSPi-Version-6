@@ -56,17 +56,18 @@ runs:
         for i in $(ls *.img)
         do
           echo "Make mount directory and mount image"
+          devicePath=$(sudo losetup -f)
           sudo losetup -Pf Lakka-RPi4.aarch64-5.0.img
           sudo losetup -l
-          sudo mkdir /mnt/loop3p1
-          sudo mount /dev/loop3p1 /mnt/loop3p1
+          sudo mkdir /mnt/rootfs
+          sudo mount $devicePath /mnt/rootfs
           echo "Add files to /boot"
-          sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/loop3p1/config.txt
-          sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/loop3p1/overlays/
-          sudo mkdir -p /mnt/loop3p1/drivers
-          # sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/loop3p1/drivers/
+          sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/rootfs/config.txt
+          sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
+          sudo mkdir -p /mnt/rootfs/drivers
+          # sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
           echo "Copy squashfs to working directory"
-          cp /mnt/loop3p1/SYSTEM ./SYSTEM
+          cp /mnt/rootfs/SYSTEM ./SYSTEM
           echo "Unpack SYSTEM squashfs"
           unsquashfs SYSTEM
           echo "Add autostart.sh"
@@ -77,9 +78,9 @@ runs:
           echo "Repack squashfs"
           mksquashfs squashfs-root filesystem.squashfs -comp xz
           echo "Copy squashfs back to image"
-          sudo cp filesystem.squashfs /mnt/loop3p1/SYSTEM
+          sudo cp filesystem.squashfs /mnt/rootfs/SYSTEM
           echo "Unmount image"
-          sudo losetup -d /dev/loop0
+          sudo losetup -d $devicePath
           echo "Recompress image"
           xz -z "$i"
           echo "Move image to completed_images and rename"
