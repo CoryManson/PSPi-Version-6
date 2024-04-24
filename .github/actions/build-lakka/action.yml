@@ -44,7 +44,7 @@ runs:
         cd downloads
         wget -nv -O Lakka-RPi4.aarch64-5.0.img.gz "https://github.com/libretro/Lakka-LibreELEC/releases/download/v5.0/Lakka-RPi4.aarch64-5.0.img.gz"
         gunzip Lakka-RPi4.aarch64-5.0.img.gz
-        mv Lakka-RPi4.aarch64-5.0.img.gz ../images/
+        mv Lakka-RPi4.aarch64-5.0.img ../images/
       working-directory: ${{ runner.temp }}
       shell: bash
 
