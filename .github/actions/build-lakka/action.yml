@@ -57,6 +57,7 @@ runs:
         do
           echo "Make mount directory and mount image"
           sudo losetup -Pf Lakka-RPi4.aarch64-5.0.img
+          sudo losetup -l
           sudo mkdir /mnt/loop0p1
           sudo mount /dev/loop0p1 /mnt/loop0p1
           echo "Add files to /boot"
