@@ -66,7 +66,7 @@ runs:
           sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/distroconfig.txt /mnt/rootfs/distroconfig.txt
           sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
           sudo mkdir -p /mnt/rootfs/drivers
-          # sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+          sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
           echo "Copy squashfs to working directory"
           cp /mnt/rootfs/SYSTEM ./SYSTEM
           echo "Unpack SYSTEM squashfs"
@@ -76,6 +76,8 @@ runs:
           chmod +x ./squashfs-root/usr/config/autostart.sh
           echo "Add joypad autoconfig"
           cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg ./squashfs-root/etc/retroarch-joypad-autoconfig/udev/PSPi-Controller.cfg
+          echo "Add driver libraries"
+          # cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* ./squashfs-root/usr/lib/
           echo "Repack squashfs"
           mksquashfs squashfs-root filesystem.squashfs -comp xz
           echo "Copy squashfs back to image"
