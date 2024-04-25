@@ -60,7 +60,7 @@ runs:
           sudo losetup -Pf Lakka-RPi4.aarch64-5.0.img
           sudo losetup -l
           sudo mkdir /mnt/rootfs
-          sudo mount $devicePath /mnt/rootfs
+          sudo mount -o loop,offset=$((512*8192)) $devicePath /mnt/rootfs
           echo "Add files to /boot"
           sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/rootfs/config.txt
           sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/distroconfig.txt /mnt/rootfs/distroconfig.txt
