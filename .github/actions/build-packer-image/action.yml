@@ -119,7 +119,6 @@ runs:
 
     # Delete images larger than 2GB and set skipRelease flag
     - name: delete large images
-      if: inputs.build == 'kali.*'
       id: delete-large-images
       run: |
         # Delete images larger than 2G
