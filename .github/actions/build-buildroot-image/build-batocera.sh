@@ -62,6 +62,6 @@ sudo umount /mnt/rootfs
 
 # Recompress image
 echo "Recompress image"
-xz -z $IMAGE_NAME
+gzip -9 $IMAGE_NAME
 echo "Move image to completed_images & rename"
-mv $IMAGE_NAME.xz ../completed_images/$PSPI_IMAGE_NAME
+mv $IMAGE_NAME.gz ../completed_images/$PSPI_IMAGE_NAME

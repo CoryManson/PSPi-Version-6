@@ -68,7 +68,7 @@ runs:
     # Generate sha256 filehash of image files
     - name: Generate sha256 filehash
       run: |
-        for i in $(ls *.img.xz)
+        for i in $(ls *.img.gz)
         do
           sha256sum "$i" | awk '{print $1}' > "$i.sha256"
         done
@@ -79,7 +79,7 @@ runs:
     - name: detect large images
       id: detect-large-images
       run: |
-        count="$(find -type f -name "*.xz" -size +2G | wc -l)"
+        count="$(find -type f -name "*.gz" -size +2G | wc -l)"
         if [ "$count" -ge 1 ]
         then
           echo "Found images larger than 2G, will not add to release"
@@ -101,12 +101,12 @@ runs:
         export AZCOPY_TENANT_ID=${{ inputs.AZCOPY_TENANT_ID }}
         az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
 
-        for i in $(ls *.img.xz)
+        for i in $(ls *.img.gz)
         do
           azcopy copy "$i" "https://${{ inputs.AZCOPY_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/pspi6/$i"
         done
 
-        for i in $(ls *.img.xz.sha256)
+        for i in $(ls *.img.gz.sha256)
         do
           azcopy copy "$i" "https://${{ inputs.AZCOPY_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/pspi6/$i"
         done
@@ -124,5 +124,5 @@ runs:
         draft: true
         fail_on_unmatched_files: true
         files: |
-          ${{ runner.temp }}/completed_images/*.img.xz
-          ${{ runner.temp }}/completed_images/*.img.xz.sha256
+          ${{ runner.temp }}/completed_images/*.img.gz
+          ${{ runner.temp }}/completed_images/*.img.gz.sha256

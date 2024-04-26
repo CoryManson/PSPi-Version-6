@@ -55,8 +55,8 @@ sudo losetup -d $devicePath
 
 # Recompress image
 echo "Recompress image"
-xz -z $IMAGE_NAME
+gzip -9 $IMAGE_NAME
 
 # Move image to completed_images and rename
 echo "Move image to completed_images and rename"
-mv $IMAGE_NAME.xz ../completed_images/$PSPI_IMAGE_NAME
+mv $IMAGE_NAME.gz ../completed_images/$PSPI_IMAGE_NAME
