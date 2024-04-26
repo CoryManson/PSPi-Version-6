@@ -50,6 +50,7 @@ jobs:
         with:
           build: 'drivers.*'
           createRelease: true
+          version: ${{ needs.run-gitversion.outputs.version }}
 
   build-packer-images:
     env:
@@ -59,7 +60,9 @@ jobs:
         # Resolves to the packer image name
         os: [batocera, raspios, retropie, kali_cm4, kali_zero2]
     runs-on: ubuntu-latest
-    needs: build-drivers
+    needs: 
+      - build-drivers
+      - run-gitversion
     steps:
       - uses: actions/checkout@v4
       
@@ -99,7 +102,9 @@ jobs:
           #   PSPI_IMAGE_NAME: "Recalbox.CM4.PSPi6.v$VERSION.img.xz"
           #   VERSION: $VERSION
     runs-on: ubuntu-latest
-    needs: build-drivers
+    needs: 
+      - build-drivers
+      - run-gitversion
     steps:
       - uses: actions/checkout@v4
 
