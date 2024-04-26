@@ -44,8 +44,8 @@ cp $GITHUB_WORKSPACE/rpi/libraries/batocera/* ./squashfs-root/usr/lib/
 echo "Add Multimedia keys for volume control"
 cp $GITHUB_WORKSPACE/rpi/configs/batocera/multimedia_keys.conf ./squashfs-root/usr/share/batocera/datainit/system/configs/multimedia_keys.conf
 
-# update S12emulationstation to copy multimedia_keys.conf into system at boot
-echo "Update S12emulationstation to copy multimedia_keys.conf into system at boot"
+# update S12populateshare to copy multimedia_keys.conf into system at boot
+echo "Update S12populateshare to copy multimedia_keys.conf into system at boot"
 sed -i '/bios\/ps2/i\            system\/configs\/multimedia_keys.conf \\' ./squashfs-root/etc/init.d/S12populateshare
 
 # repack squashfs

@@ -95,9 +95,25 @@ runs:
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
+    # COunt images larger than 2GB and set SKIP_RELEASE variable
+    - name: detect large images
+      id: detect-large-images
+      run: |
+        count="$(find -type f -name "*.xz" -size +2G | wc -l)"
+        if [ "$count" == "0" ]
+        then
+          echo "No images to add to release"
+          echo "SKIP_RELEASE=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "Found images to add to release"
+          echo "SKIP_RELEASE=false" >> "$GITHUB_OUTPUT"
+        fi
+      working-directory: packer/plugins/packer-builder-arm
+      shell: bash
+
     # Upload files to azure storage account
     - name: Upload files to storage account
-      if: inputs.build == 'kali.*'
+      if: steps.detect-large-images.outputs.SKIP_RELEASE == 'true'
       run: |
         export AZCOPY_AUTO_LOGIN_TYPE=SPN
         export AZCOPY_SPA_APPLICATION_ID=${{ inputs.AZCOPY_SPA_APPLICATION_ID }}
@@ -117,29 +133,9 @@ runs:
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
-    # Delete images larger than 2GB and set skipRelease flag
-    - name: delete large images
-      id: delete-large-images
-      run: |
-        # Delete images larger than 2G
-        find -type f -name "*img.xz" -size +2G -delete
-
-        # Skip updating github release if there's no longer any images to add
-        count="$(find -type f -name "*.xz" | wc -l)"
-        if [ "$count" == "0" ]
-        then
-          echo "No images to add to release"
-          echo "SKIP_RELEASE=true" >> "$GITHUB_OUTPUT"
-        else
-          echo "Found images to add to release"
-          echo "SKIP_RELEASE=false" >> "$GITHUB_OUTPUT"
-        fi
-      working-directory: packer/plugins/packer-builder-arm
-      shell: bash
-
     # Update github release
     - name: Update Release
-      if: steps.delete-large-images.outputs.SKIP_RELEASE == 'false'
+      if: steps.detect-large-images.outputs.SKIP_RELEASE == 'false'
       uses: softprops/action-gh-release@v0.1.15
       with:
         tag_name: v${{ inputs.version }}
