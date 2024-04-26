@@ -16,6 +16,9 @@ inputs:
   AZCOPY_STORAGE_ACCOUNT_NAME:
     description: 'Azure Storage Account Name'
     required: true
+  version:
+    description: 'Version of the image'
+    required: true
   
 runs:
   using: "composite"
@@ -43,18 +46,7 @@ runs:
         az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
 
         azcopy list "https://stpspiproduseast001.blob.core.windows.net/pspi6/"
-      shell: bash
-
-    # Install GitVersion
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0
-      with:
-        versionSpec: '5.x'
-
-    # Determine version
-    - name: Determine Version
-      id:   gitversion
-      uses: gittools/actions/gitversion/execute@v0      
+      shell: bash   
 
     # Install dependencies for packer
     - name: Install dependencies
@@ -150,8 +142,8 @@ runs:
       uses: softprops/action-gh-release@v0.1.15
       with:
         generate_release_notes: true
-        tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
-        name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}
+        tag_name: v${{ inputs.version }}
+        name: Release v${{ inputs.version }}
         draft: true
         fail_on_unmatched_files: true
         files: |

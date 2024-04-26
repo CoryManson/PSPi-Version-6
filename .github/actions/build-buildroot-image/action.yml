@@ -1,0 +1,82 @@
+name: Build Lakka Image
+description: 'Build PSPi Recalbox image'
+inputs:
+  os:
+    description: 'Operating system to build'
+    required: true
+  download_url:
+    description: 'Download URL for image'
+    required: true
+  image_name:
+    description: 'Name of downloaded image file'
+    required: true
+  pspi_image_name:
+    description: 'Name of the pspi artifact image'
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    # Checkout repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+      
+    # Download driver artifacts
+    - name: Download Drivers
+      uses: actions/download-artifact@v4
+      with:
+        path: rpi/drivers/bin
+        merge-multiple: true    
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install squashfs-tools -y
+      shell: bash
+
+    # Download image
+    - name: Download image file
+      run: |
+        mkdir -p downloads
+        mkdir -p images
+        cd downloads
+        wget -nv -O ${{ inputs.image_name }} ${{ inputs.download_url }}
+        gunzip ${{ inputs.image_name }}
+        mv *.img ../images/
+      working-directory: ${{ runner.temp }}
+      shell: bash
+
+    - name: Build Image
+      shell: bash
+      run: build-${{ inputs.os }}.sh
+      working-directory: ${{ runner.temp }}
+      env:
+        GITHUB_WORKSPACE: ${{ github.workspace }}
+        IMAGE_NAME: ${{ inputs.image_name }}
+        PSPI_IMAGE_NAME: ${{ inputs.pspi_image_name }}
+
+    # Generate sha256 filehash of image files
+    - name: Generate sha256 filehash
+      run: |
+        for i in $(ls *.img.xz)
+        do
+          sha256sum "$i" | awk '{print $1}' > "$i.sha256"
+        done
+      working-directory: ${{ runner.temp }}/completed_images
+      shell: bash
+
+    # Update github release
+    - name: Update Release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        generate_release_notes: true
+        tag_name: v${{ inputs.version }}
+        name: Release v${{ inputs.version }}
+        draft: true
+        fail_on_unmatched_files: true
+        files: |
+          ${{ runner.temp }}/completed_images/*.img.xz
+          ${{ runner.temp }}/completed_images/*.img.xz.sha256

@@ -7,6 +7,10 @@ inputs:
   createRelease:
     description: 'Create a release'
     default: 'false'
+outputs:
+  version:
+    description: 'Major.Minor.Patch version'
+    value: ${{ steps.gitversion.outputs.majorMinorPatch }}  
 
 runs:
   using: "composite"
@@ -26,7 +30,7 @@ runs:
     # Determine version
     - name: Determine Version
       id:   gitversion
-      uses: gittools/actions/gitversion/execute@v0 
+      uses: gittools/actions/gitversion/execute@v0
 
     # Install packer dependencies
     - name: Install dependencies

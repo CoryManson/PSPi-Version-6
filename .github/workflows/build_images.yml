@@ -27,6 +27,7 @@ jobs:
         with:
           build: 'drivers.*'
           createRelease: true
+
   build-packer-images:
     strategy:
       matrix:
@@ -39,26 +40,39 @@ jobs:
       
       - name: Build & Publish Images
         id: build-image
-        uses: ./.github/actions/build-image
+        uses: ./.github/actions/build-packer-image
         with:
           build: '${{ matrix.os }}.*'
           AZCOPY_TENANT_ID: ${{ secrets.AZCOPY_TENANT_ID }}
           AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
           AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
           AZCOPY_STORAGE_ACCOUNT_NAME: ${{ vars.AZCOPY_STORAGE_ACCOUNT_NAME }}
-  build-recalbox:
+          version: ${{ needs.build-drivers.outputs.version }}
+
+  build-buildroot-images:
+    strategy:
+      matrix:
+        image: 
+          - OS: lakka
+            DOWNLOAD_URL: "https://github.com/libretro/Lakka-LibreELEC/releases/download/v5.0/Lakka-RPi4.aarch64-5.0.img.gz"
+            IMAGE_NAME: "Lakka-RPi4.aarch64-5.0.img.gz"
+            PSPI_IMAGE_NAME: "Lakka5.CM4.PSPi6.v${{ needs.build-drivers.outputs.version }}.img.xz"
+            VERSION: ${{ needs.build-drivers.outputs.version }}
+          - os: recalbox
+            DOWNLOAD_URL: "https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz"
+            IMAGE_NAME: "recalbox-rpi4_64.img.xz"
+            PSPI_IMAGE_NAME: "Recalbox.CM4.PSPi6.v${{ needs.build-drivers.outputs.version }}.img.xz"
+            VERSION: ${{ needs.build-drivers.outputs.version }}
     runs-on: ubuntu-latest
     needs: build-drivers
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Recalbox
-        uses: ./.github/actions/build-recalbox
-  build-lakka:
-    runs-on: ubuntu-latest
-    needs: build-drivers
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build Lakka
-        uses: ./.github/actions/build-lakka
+      - name: Build & Publish Images
+        uses: ./.github/actions/build-buildroot-image
+        with:
+          os: ${{ matrix.image.OS }}
+          download_url: ${{ matrix.image.DOWNLOAD_URL }}
+          image_name: ${{ matrix.image.IMAGE_NAME }}
+          pspi_image_name: ${{ matrix.image.PSPI_IMAGE_NAME }}
+          version: ${{ matrix.image.VERSION }}
