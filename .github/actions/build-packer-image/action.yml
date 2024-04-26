@@ -143,7 +143,6 @@ runs:
       if: steps.delete-large-images.outputs.SKIP_RELEASE == 'false'
       uses: softprops/action-gh-release@v0.1.15
       with:
-        generate_release_notes: true
         tag_name: v${{ inputs.version }}
         name: Release v${{ inputs.version }}
         draft: true
@@ -151,7 +150,3 @@ runs:
         files: |
           packer/plugins/packer-builder-arm/*.img.xz
           packer/plugins/packer-builder-arm/*.img.xz.sha256
-
-      
-
-      

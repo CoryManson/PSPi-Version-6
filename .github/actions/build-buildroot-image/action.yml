@@ -47,7 +47,14 @@ runs:
         mkdir -p images
         cd downloads
         wget -nv -O ${{ inputs.image_name }} ${{ inputs.download_url }}
-        gunzip ${{ inputs.image_name }}
+        if [[ ${{ inputs.image_name }} == *.gz ]]; then
+          gunzip ${{ inputs.image_name }}
+        elif [[ ${{ inputs.image_name }} == *.xz ]]; then
+          unxz ${{ inputs.image_name }}
+        else
+          echo "Unknown image type"
+          exit 1
+        fi
         mv *.img ../images/
       working-directory: ${{ runner.temp }}
       shell: bash
