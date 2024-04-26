@@ -58,6 +58,8 @@ sudo rm /mnt/image/boot/batocera
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
+df -h /mnt/image
+sleep 5
 sudo cp filesystem.squashfs /mnt/image/boot/batocera
 
 # Unmount
