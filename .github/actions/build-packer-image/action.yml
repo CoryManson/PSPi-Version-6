@@ -19,7 +19,7 @@ inputs:
   version:
     description: 'gitversion version output'
     required: true
-  
+
 runs:
   using: "composite"
   steps:
@@ -28,7 +28,7 @@ runs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-      
+
     # Download driver artifacts
     - name: Download Drivers
       uses: actions/download-artifact@v4
@@ -46,7 +46,7 @@ runs:
         az login --service-principal -u ${{ inputs.AZCOPY_SPA_APPLICATION_ID }} -p ${{ inputs.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ inputs.AZCOPY_TENANT_ID }}
 
         azcopy list "https://stpspiproduseast001.blob.core.windows.net/pspi6/"
-      shell: bash   
+      shell: bash
 
     # Install dependencies for packer
     - name: Install dependencies

@@ -33,21 +33,21 @@ sudo mount --type="overlay" --options="lowerdir=/mnt/squashfs,upperdir=/tmp/uppe
 
 # Add custom.sh to recalbox
 echo "Add custom.sh to recalbox"
-cp $GITHUB_WORKSPACE/rpi/scripts/recalbox/custom.sh /tmp/target/recalbox/share_init/system/custom.sh
-chmod +x /tmp/target/recalbox/share_init/system/custom.sh
+sudo cp $GITHUB_WORKSPACE/rpi/scripts/recalbox/custom.sh /tmp/target/recalbox/share_init/system/custom.sh
+sudo chmod +x /tmp/target/recalbox/share_init/system/custom.sh
 
 # Update S12populateshare to copy custom.sh into system at boot
 echo "Update S12populateshare to copy custom.sh into system at boot"
-sed -i "`wc -l < /tmp/target/etc/init.d/S12populateshare`i\\# copy pspi custom.sh\\" /tmp/target/etc/init.d/S12populateshare
-sed -i "`wc -l < /tmp/target/etc/init.d/S12populateshare`i\\cp "/recalbox/share_init/system/custom.sh" "/recalbox/share/system/custom.sh"\\" /tmp/target/etc/init.d/S12populateshare
+sudo sed -i "`wc -l < /tmp/target/etc/init.d/S12populateshare`i\\# copy pspi custom.sh\\" /tmp/target/etc/init.d/S12populateshare
+sudo sed -i "`wc -l < /tmp/target/etc/init.d/S12populateshare`i\\cp "/recalbox/share_init/system/custom.sh" "/recalbox/share/system/custom.sh"\\" /tmp/target/etc/init.d/S12populateshare
 
 # Add driver libraries
 echo "Add driver libraries"
-cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* /tmp/target/usr/lib/
+sudo cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* /tmp/target/usr/lib/
 
 # repack squashfs
 echo "Repack squashfs"
-mksquashfs /tmp/target ./filesystem.squashfs -noappend
+sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"

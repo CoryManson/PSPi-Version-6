@@ -25,7 +25,7 @@ sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
-cp /mnt/image/SYSTEM ./SYSTEM
+sudo cp /mnt/image/SYSTEM ./SYSTEM
 
 # Mount squashfs
 echo "Mount squashfs"
@@ -45,7 +45,7 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg /tmp/target/etc/
 
 # Repack squashfs
 echo "Repack squashfs"
-mksquashfs /tmp/target ./filesystem.squashfs -noappend
+sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
