@@ -54,12 +54,12 @@ sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend -comp zstd
 # zero out the original squashfs file and trim any blank space
 echo "zero out the original squashfs file and trim any blank space"
 sudo dd if=/dev/zero of=/mnt/image/boot/batocera bs=1M status=progress
+sleep 5
 sudo rm /mnt/image/boot/batocera
+df -h /mnt/image
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
-df -h /mnt/image
-sleep 5
 sudo cp filesystem.squashfs /mnt/image/boot/batocera
 
 # Unmount
