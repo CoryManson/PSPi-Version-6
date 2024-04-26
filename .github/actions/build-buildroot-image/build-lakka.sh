@@ -17,7 +17,7 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/rootfs/config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/distroconfig.txt /mnt/rootfs/distroconfig.txt
 sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
 sudo mkdir -p /mnt/rootfs/drivers
-sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+# sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
@@ -51,8 +51,8 @@ sudo losetup -d $devicePath
 
 # Recompress image
 echo "Recompress image"
-xz -z "$IMAGE_NAME"
+xz -z $IMAGE_NAME
 
 # Move image to completed_images and rename
 echo "Move image to completed_images and rename"
-mv "$IMAGE_NAME.xz" ../completed_images/$PSPI_IMAGE_NAME
+mv $IMAGE_NAME.xz ../completed_images/$PSPI_IMAGE_NAME

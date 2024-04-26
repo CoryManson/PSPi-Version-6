@@ -7,8 +7,11 @@ inputs:
   download_url:
     description: 'Download URL for image'
     required: true
+  compressed_image_name:
+    description: 'Name of downloaded compressed image file'
+    required: true
   image_name:
-    description: 'Name of downloaded image file'
+    description: 'Name of uncompressed image file'
     required: true
   pspi_image_name:
     description: 'Name of the pspi artifact image'
@@ -46,11 +49,11 @@ runs:
         mkdir -p downloads
         mkdir -p images
         cd downloads
-        wget -nv -O ${{ inputs.image_name }} ${{ inputs.download_url }}
-        if [[ ${{ inputs.image_name }} == *.gz ]]; then
-          gunzip ${{ inputs.image_name }}
-        elif [[ ${{ inputs.image_name }} == *.xz ]]; then
-          unxz ${{ inputs.image_name }}
+        wget -nv -O ${{ inputs.compressed_image_name }} ${{ inputs.download_url }}
+        if [[ ${{ inputs.compressed_image_name }} == *.gz ]]; then
+          gunzip ${{ inputs.compressed_image_name }}
+        elif [[ ${{ inputs.compressed_image_name }} == *.xz ]]; then
+          unxz ${{ inputs.compressed_image_name }}
         else
           echo "Unknown image type"
           exit 1

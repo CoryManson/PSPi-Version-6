@@ -6,7 +6,7 @@ cd images
 # Create mount directory and mount image file
 echo "Make mount directory and mount image"
 sudo mkdir -p /mnt/rootfs
-sudo mount -o loop,offset=$((512*2048)) "$IMAGE_NAME" /mnt/rootfs
+sudo mount -o loop,offset=$((512*2048)) $IMAGE_NAME /mnt/rootfs
 
 # Add files to /boot
 echo "Add files to /boot"
@@ -14,7 +14,7 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/rootfs/config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/recalbox-user-config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
 sudo mkdir -p /mnt/rootfs/drivers
-sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+# sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
@@ -52,6 +52,6 @@ sudo umount /mnt/rootfs
 
 # Recompress image
 echo "Recompress image"
-xz -z "$IMAGE_NAME"
+xz -z $IMAGE_NAME
 echo "Move image to completed_images & rename"
-mv "$IMAGE_NAME.xz" ../completed_images/$PSPI_IMAGE_NAME
+mv $IMAGE_NAME.xz ../completed_images/$PSPI_IMAGE_NAME
