@@ -43,7 +43,7 @@ source "arm" "retropie_zero2_arm64" {
   file_target_extension = "gz"
   file_unarchive_cmd    = ["gunzip", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
-  image_path            = "RetroPie4-8.Zero2.PSPi6.${var.pspi_version}.img"
+  image_path            = "RetroPie4.8-Zero2-PSPi6-${var.pspi_version}.img"
   image_size            = "4G"
   image_type            = "dos"
 
@@ -81,7 +81,7 @@ source "arm" "retropie_cm4_arm64" {
   file_target_extension = "gz"
   file_unarchive_cmd    = ["gunzip", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
-  image_path            = "RetroPie4-8.CM4.PSPi6.${var.pspi_version}.img"
+  image_path            = "RetroPie4.8-CM4-PSPi6-${var.pspi_version}.img"
   image_size            = "4G"
   image_type            = "dos"
 
