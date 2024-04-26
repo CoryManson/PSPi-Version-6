@@ -9,7 +9,7 @@ cd images
 
 # Create mount directory and mount image file
 echo "Make mount directory and mount image"
-sudo mkdir -p /mnt/image /mnt/squashfs /tmp/upper /tmp/work /tmp/target
+sudo mkdir -p /mnt/image /tmp/squashfs /tmp/upper /tmp/work /tmp/target
 sudo mount -o loop,offset=$((512*2048)) $IMAGE_NAME /mnt/image
 
 # Add files to /boot
@@ -19,16 +19,12 @@ sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
 sudo mkdir -p /mnt/image/drivers
 # sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
-# Copy squashfs to working directory
-echo "Copy squashfs to working directory"
-sudo cp /mnt/image/boot/batocera ./batocera
-
 # Mount squashfs
 echo "Mount squashfs"
-sudo mount --type="squashfs" --options="loop" --source="batocera" --target="/mnt/squashfs"
+sudo mount --type="squashfs" --options="loop" --source="/mnt/image/boot/batocera" --target="/tmp/squashfs"
 # Mount overlay
 echo "Mount overlay"
-sudo mount --type="overlay" --options="lowerdir=/mnt/squashfs,upperdir=/tmp/upper,workdir=/tmp/work" --source="overlay" --target="/tmp/target"
+sudo mount --type="overlay" --options="lowerdir=/tmp/squashfs,upperdir=/tmp/upper,workdir=/tmp/work" --source="overlay" --target="/tmp/target"
 
 # Add custom.sh
 echo "Add custom.sh"
@@ -53,7 +49,13 @@ sudo sed -i '/bios\/ps2/i\            system\/configs\/multimedia_keys.conf \\' 
 
 # repack squashfs
 echo "Repack squashfs"
-sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend
+sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend -comp zstd
+
+# zero out the original squashfs file and trim any blank space
+echo "zero out the original squashfs file and trim any blank space"
+sudo dd if=/dev/zero of=/mnt/image/boot/batocera bs=1M status=progress
+sudo rm /mnt/image/boot/batocera
+sudo fstrim -v /mnt/image
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
@@ -63,7 +65,7 @@ sudo cp filesystem.squashfs /mnt/image/boot/batocera
 echo "Unmount overlay"
 sudo umount --type="overlay" /tmp/target
 echo "Unmount squashfs"
-sudo umount --type="squashfs" /mnt/squashfs
+sudo umount --type="squashfs" /tmp/squashfs
 echo "Unmount image"
 sudo umount /mnt/image
 

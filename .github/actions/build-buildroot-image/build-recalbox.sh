@@ -49,9 +49,15 @@ sudo cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* /tmp/target/usr/lib/
 echo "Repack squashfs"
 sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
+# zero out the original squashfs file and trim any blank space
+echo "zero out the original squashfs file and trim any blank space"
+sudo dd if=/dev/zero of=/mnt/image/boot/recalbox bs=1M status=progress
+sudo rm /mnt/image/boot/recalbox
+sudo fstrim -v /mnt/image
+
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
-sudo cp filesystem.squashfs /mnt/image/boot/batocera
+sudo cp filesystem.squashfs /mnt/image/boot/recalbox
 
 # Unmount
 echo "Unmount overlay"
