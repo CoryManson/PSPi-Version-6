@@ -96,10 +96,10 @@ jobs:
             PSPI_IMAGE_NAME: "Recalbox.CM4.PSPi6.v$VERSION.img.xz"
             VERSION: $VERSION
           # - os: batocera
-          #   DOWNLOAD_URL: "https://upgrade.recalbox.com/latest/download-wizard/rpi4_64/recalbox-rpi4_64.img.xz"
-          #   COMPRESSED_IMAGE_NAME: "recalbox-rpi4_64.img.xz"
-          #   IMAGE_NAME: "recalbox-rpi4_64.img"
-          #   PSPI_IMAGE_NAME: "Recalbox.CM4.PSPi6.v$VERSION.img.xz"
+          #   DOWNLOAD_URL: "https://stpspiproduseast001.blob.core.windows.net/pspi6/batocera-bcm2711-bcm2711-39-20240228.img.gz"
+          #   COMPRESSED_IMAGE_NAME: "batocera-bcm2711-bcm2711-39-20240228.img.gz"
+          #   IMAGE_NAME: "batocera-bcm2711-bcm2711-39-20240228.img"
+          #   PSPI_IMAGE_NAME: "Batocera.CM4.PSPi6.v$VERSION.img.xz"
           #   VERSION: $VERSION
     runs-on: ubuntu-latest
     needs: 

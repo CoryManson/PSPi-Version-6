@@ -69,7 +69,7 @@ runs:
     # Build images
     - name: Build images
       run: |
-        sudo packer build -only ${{ inputs.build }} -var pspi_version=v${{ steps.gitversion.outputs.majorMinorPatch }} "$GITHUB_WORKSPACE/packer/"
+        sudo packer build -only ${{ inputs.build }} -var pspi_version=v${{ inputs.version }} "$GITHUB_WORKSPACE/packer/"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
 
