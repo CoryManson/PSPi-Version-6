@@ -54,7 +54,7 @@ runs:
 
     - name: Build Image
       shell: bash
-      run: ${{ github.action.path }}/build-${{ inputs.os }}.sh
+      run: $GITHUB_ACTION_PATH/build-${{ inputs.os }}.sh
       working-directory: ${{ runner.temp }}
       env:
         GITHUB_WORKSPACE: ${{ github.workspace }}
