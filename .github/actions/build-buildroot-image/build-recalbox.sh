@@ -9,50 +9,57 @@ cd images
 
 # Create mount directory and mount image file
 echo "Make mount directory and mount image"
-sudo mkdir -p /mnt/rootfs
-sudo mount -o loop,offset=$((512*2048)) $IMAGE_NAME /mnt/rootfs
+sudo mkdir -p /mnt/image /mnt/squashfs /tmp/upper /tmp/work /tmp/target
+sudo mount -o loop,offset=$((512*2048)) $IMAGE_NAME /mnt/image
 
 # Add files to /boot
 echo "Add files to /boot"
-sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/rootfs/config.txt
-sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/recalbox-user-config.txt
-sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
-sudo mkdir -p /mnt/rootfs/drivers
-sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/image/config.txt
+sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/image/recalbox-user-config.txt
+sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
+sudo mkdir -p /mnt/image/drivers
+sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
-sudo cp /mnt/rootfs/boot/recalbox ./recalbox
+sudo cp /mnt/image/boot/recalbox ./recalbox
 
-# Unpack squashfs
-echo "Unpack squashfs"
-unsquashfs recalbox
+# Mount squashfs
+echo "Mount squashfs"
+sudo mount --type="squashfs" --options="loop" --source="recalbox" --target="/mnt/squashfs"
+# Mount overlay
+echo "Mount overlay"
+sudo mount --type="overlay" --options="lowerdir=/mnt/squashfs,upperdir=/tmp/upper,workdir=/tmp/work" --source="overlay" --target="/tmp/target"
 
 # Add custom.sh to recalbox
 echo "Add custom.sh to recalbox"
-cp $GITHUB_WORKSPACE/rpi/scripts/recalbox/custom.sh ./squashfs-root/recalbox/share_init/system/custom.sh
-chmod +x ./squashfs-root/recalbox/share_init/system/custom.sh
+cp $GITHUB_WORKSPACE/rpi/scripts/recalbox/custom.sh /tmp/target/recalbox/share_init/system/custom.sh
+chmod +x /tmp/target/recalbox/share_init/system/custom.sh
 
 # Update S12populateshare to copy custom.sh into system at boot
 echo "Update S12populateshare to copy custom.sh into system at boot"
-sed -i "`wc -l < ./squashfs-root/etc/init.d/S12populateshare`i\\# copy pspi custom.sh\\" ./squashfs-root/etc/init.d/S12populateshare
-sed -i "`wc -l < ./squashfs-root/etc/init.d/S12populateshare`i\\cp "/recalbox/share_init/system/custom.sh" "/recalbox/share/system/custom.sh"\\" ./squashfs-root/etc/init.d/S12populateshare
+sed -i "`wc -l < /tmp/target/etc/init.d/S12populateshare`i\\# copy pspi custom.sh\\" /tmp/target/etc/init.d/S12populateshare
+sed -i "`wc -l < /tmp/target/etc/init.d/S12populateshare`i\\cp "/recalbox/share_init/system/custom.sh" "/recalbox/share/system/custom.sh"\\" /tmp/target/etc/init.d/S12populateshare
 
 # Add driver libraries
 echo "Add driver libraries"
-cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* ./squashfs-root/usr/lib/
+cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* /tmp/target/usr/lib/
 
 # repack squashfs
 echo "Repack squashfs"
-mksquashfs squashfs-root filesystem.squashfs -comp zstd
+mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
-sudo cp filesystem.squashfs /mnt/rootfs/boot/recalbox
+sudo cp filesystem.squashfs /mnt/image/boot/batocera
 
-# Unmount image
+# Unmount
+echo "Unmount overlay"
+sudo umount --type="overlay" /tmp/target
+echo "Unmount squashfs"
+sudo umount --type="squashfs" /mnt/squashfs
 echo "Unmount image"
-sudo umount /mnt/rootfs
+sudo umount /mnt/image
 
 # Recompress image
 echo "Recompress image"

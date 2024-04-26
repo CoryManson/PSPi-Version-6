@@ -12,45 +12,52 @@ echo "Make mount directory and mount image"
 devicePath=$(sudo losetup -f)
 sudo losetup -Pf $IMAGE_NAME
 sudo losetup -l
-sudo mkdir /mnt/rootfs
-sudo mount -o loop,offset=$((512*8192)) $devicePath /mnt/rootfs
+sudo mkdir -p /mnt/image /mnt/squashfs /tmp/upper /tmp/work /tmp/target
+sudo mount -o loop,offset=$((512*8192)) $devicePath /mnt/image
 
 # Add files to /boot
 echo "Add files to /boot"
-sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/rootfs/config.txt
-sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/distroconfig.txt /mnt/rootfs/distroconfig.txt
-sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
-sudo mkdir -p /mnt/rootfs/drivers
-sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/image/config.txt
+sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/distroconfig.txt /mnt/image/distroconfig.txt
+sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
+sudo mkdir -p /mnt/image/drivers
+sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
-cp /mnt/rootfs/SYSTEM ./SYSTEM
+cp /mnt/image/SYSTEM ./SYSTEM
 
-# Unpack SYSTEM squashfs
-echo "Unpack SYSTEM squashfs"
-sudo unsquashfs SYSTEM
+# Mount squashfs
+echo "Mount squashfs"
+sudo mount --type="squashfs" --options="loop" --source="SYSTEM" --target="/mnt/squashfs"
+# Mount overlay
+echo "Mount overlay"
+sudo mount --type="overlay" --options="lowerdir=/mnt/squashfs,upperdir=/tmp/upper,workdir=/tmp/work" --source="overlay" --target="/tmp/target"
 
 # Add autostart.sh
 echo "Add autostart.sh"
-sudo cp $GITHUB_WORKSPACE/rpi/scripts/lakka/autostart.sh ./squashfs-root/usr/config/autostart.sh
-sudo chmod +x ./squashfs-root/usr/config/autostart.sh
+sudo cp $GITHUB_WORKSPACE/rpi/scripts/lakka/autostart.sh /tmp/target/usr/config/autostart.sh
+sudo chmod +x /tmp/target/usr/config/autostart.sh
 
 # Add joypad autoconfig
 echo "Add joypad autoconfig"
-sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg ./squashfs-root/etc/retroarch-joypad-autoconfig/udev/PSPi-Controller.cfg
+sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg /tmp/target/etc/retroarch-joypad-autoconfig/udev/PSPi-Controller.cfg
 
 # Repack squashfs
 echo "Repack squashfs"
-sudo mksquashfs squashfs-root filesystem.squashfs -comp zstd
+mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
-sudo cp filesystem.squashfs /mnt/rootfs/SYSTEM
+sudo cp filesystem.squashfs /mnt/image/SYSTEM
 
-# Unmount image
+# Unmount
+echo "Unmount overlay"
+sudo umount --type="overlay" /tmp/target
+echo "Unmount squashfs"
+sudo umount --type="squashfs" /mnt/squashfs
 echo "Unmount image"
-sudo umount /mnt/rootfs
+sudo umount /mnt/image
 sudo losetup -d $devicePath
 
 # Recompress image

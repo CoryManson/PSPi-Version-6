@@ -14,14 +14,14 @@ sudo mount -o loop,offset=$((512*2048)) $IMAGE_NAME /mnt/image
 
 # Add files to /boot
 echo "Add files to /boot"
-sudo cp $GITHUB_WORKSPACE/rpi/configs/batocera/config.txt /mnt/rootfs/config.txt
-sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
-sudo mkdir -p /mnt/rootfs/drivers
-sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+sudo cp $GITHUB_WORKSPACE/rpi/configs/batocera/config.txt /mnt/image/config.txt
+sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
+sudo mkdir -p /mnt/image/drivers
+sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
-sudo cp /mnt/rootfs/boot/batocera ./batocera
+sudo cp /mnt/image/boot/batocera ./batocera
 
 # Mount squashfs
 echo "Mount squashfs"
@@ -57,15 +57,15 @@ mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
-sudo cp filesystem.squashfs /mnt/rootfs/boot/batocera
+sudo cp filesystem.squashfs /mnt/image/boot/batocera
 
 # Unmount
 echo "Unmount overlay"
 sudo umount --type="overlay" /tmp/target
 echo "Unmount squashfs"
 sudo umount --type="squashfs" /mnt/squashfs
-echo "Unmount rootfs"
-sudo umount /mnt/rootfs
+echo "Unmount image"
+sudo umount /mnt/image
 
 # Compress image
 echo "Compress image"
