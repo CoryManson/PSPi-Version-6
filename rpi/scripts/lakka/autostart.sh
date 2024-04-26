@@ -19,4 +19,4 @@ detect_architecture
 
 /flash/drivers/main$ARCH_SUFFIX --dim &
 # sleep 1
-# /flash/drivers/osd$ARCH_SUFFIX
+/flash/drivers/osd$ARCH_SUFFIX
