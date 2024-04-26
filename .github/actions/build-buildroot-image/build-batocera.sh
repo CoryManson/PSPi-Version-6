@@ -17,7 +17,7 @@ echo "Add files to /boot"
 sudo cp $GITHUB_WORKSPACE/rpi/configs/batocera/config.txt /mnt/image/config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
 sudo mkdir -p /mnt/image/drivers
-# sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
+sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Mount squashfs
 echo "Mount squashfs"

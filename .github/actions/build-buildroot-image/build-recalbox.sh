@@ -18,15 +18,11 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/image/config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/image/recalbox-user-config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
 sudo mkdir -p /mnt/image/drivers
-# sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
-
-# Copy squashfs to working directory
-echo "Copy squashfs to working directory"
-sudo cp /mnt/image/boot/recalbox ./recalbox
+sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Mount squashfs
 echo "Mount squashfs"
-sudo mount --type="squashfs" --options="loop" --source="recalbox" --target="/mnt/squashfs"
+sudo mount --type="squashfs" --options="loop" --source="/mnt/image/boot/recalbox" --target="/mnt/squashfs"
 # Mount overlay
 echo "Mount overlay"
 sudo mount --type="overlay" --options="lowerdir=/mnt/squashfs,upperdir=/tmp/upper,workdir=/tmp/work" --source="overlay" --target="/tmp/target"

@@ -21,15 +21,11 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/image/config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/distroconfig.txt /mnt/image/distroconfig.txt
 sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
 sudo mkdir -p /mnt/image/drivers
-# sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
-
-# Copy squashfs to working directory
-echo "Copy squashfs to working directory"
-sudo cp /mnt/image/SYSTEM ./SYSTEM
+sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Mount squashfs
 echo "Mount squashfs"
-sudo mount --type="squashfs" --options="loop" --source="SYSTEM" --target="/mnt/squashfs"
+sudo mount --type="squashfs" --options="loop" --source="/mnt/image/SYSTEM" --target="/mnt/squashfs"
 # Mount overlay
 echo "Mount overlay"
 sudo mount --type="overlay" --options="lowerdir=/mnt/squashfs,upperdir=/tmp/upper,workdir=/tmp/work" --source="overlay" --target="/tmp/target"
