@@ -14,7 +14,7 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/config.txt /mnt/rootfs/config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/configs/recalbox/recalbox-user-config.txt /mnt/rootfs/recalbox-user-config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/rootfs/overlays/
 sudo mkdir -p /mnt/rootfs/drivers
-# sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
+sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
