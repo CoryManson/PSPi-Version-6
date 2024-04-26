@@ -21,7 +21,7 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/config.txt /mnt/image/config.txt
 sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/distroconfig.txt /mnt/image/distroconfig.txt
 sudo cp $GITHUB_WORKSPACE/rpi/overlays/* /mnt/image/overlays/
 sudo mkdir -p /mnt/image/drivers
-sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
+# sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/image/drivers/
 
 # Copy squashfs to working directory
 echo "Copy squashfs to working directory"
