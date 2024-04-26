@@ -17,7 +17,7 @@ inputs:
     description: 'Azure Storage Account Name'
     required: true
   version:
-    description: 'Version of the image'
+    description: 'gitversion version output'
     required: true
   
 runs:

@@ -1,4 +1,5 @@
 #!/bin/sh
+set +x
 
 mkdir -p completed_images
 cd images

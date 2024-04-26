@@ -13,6 +13,9 @@ inputs:
   pspi_image_name:
     description: 'Name of the pspi artifact image'
     required: true
+  version:
+    description: 'gitversion version output'
+    required: true
   
 runs:
   using: "composite"
@@ -51,7 +54,7 @@ runs:
 
     - name: Build Image
       shell: bash
-      run: build-${{ inputs.os }}.sh
+      run: ${{ github.action.path }}/build-${{ inputs.os }}.sh
       working-directory: ${{ runner.temp }}
       env:
         GITHUB_WORKSPACE: ${{ github.workspace }}
