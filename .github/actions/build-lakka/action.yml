@@ -70,14 +70,14 @@ runs:
           echo "Copy squashfs to working directory"
           cp /mnt/rootfs/SYSTEM ./SYSTEM
           echo "Unpack SYSTEM squashfs"
-          unsquashfs SYSTEM
+          sudo unsquashfs SYSTEM
           echo "Add autostart.sh"
-          cp $GITHUB_WORKSPACE/rpi/scripts/lakka/autostart.sh ./squashfs-root/usr/config/autostart.sh
-          chmod +x ./squashfs-root/usr/config/autostart.sh
+          sudo cp $GITHUB_WORKSPACE/rpi/scripts/lakka/autostart.sh ./squashfs-root/usr/config/autostart.sh
+          sudo chmod +x ./squashfs-root/usr/config/autostart.sh
           echo "Add joypad autoconfig"
-          cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg ./squashfs-root/etc/retroarch-joypad-autoconfig/udev/PSPi-Controller.cfg
+          sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg ./squashfs-root/etc/retroarch-joypad-autoconfig/udev/PSPi-Controller.cfg
           echo "Repack squashfs"
-          mksquashfs squashfs-root filesystem.squashfs -comp xz
+          sudo mksquashfs squashfs-root filesystem.squashfs -comp xz
           echo "Copy squashfs back to image"
           sudo cp filesystem.squashfs /mnt/rootfs/SYSTEM
           echo "Unmount image"
