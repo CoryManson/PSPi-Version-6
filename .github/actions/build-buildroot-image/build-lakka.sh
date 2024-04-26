@@ -47,8 +47,14 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg /tmp/target/etc/
 echo "Repack squashfs"
 sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
-# zero out the original squashfs file and trim any blank space
-echo "zero out the original squashfs file and trim any blank space"
+# Unmount
+echo "Unmount overlay"
+sudo umount --type="overlay" /tmp/target
+echo "Unmount squashfs"
+sudo umount --type="squashfs" /mnt/squashfs
+
+# zero out all space in the original image file
+echo "zero out all space in the original image file. an error from dd (no space left on device) is expected here"
 sudo dd if=/dev/zero of=/mnt/image/SYSTEM bs=1M status=progress
 sleep 5
 sudo rm /mnt/image/SYSTEM
@@ -58,11 +64,7 @@ df -h /mnt/image
 echo "Copy squashfs back to image"
 sudo cp filesystem.squashfs /mnt/image/SYSTEM
 
-# Unmount
-echo "Unmount overlay"
-sudo umount --type="overlay" /tmp/target
-echo "Unmount squashfs"
-sudo umount --type="squashfs" /mnt/squashfs
+# unmount
 echo "Unmount image"
 sudo umount /mnt/image
 sudo losetup -d $devicePath

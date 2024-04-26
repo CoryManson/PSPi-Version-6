@@ -51,8 +51,14 @@ sudo sed -i '/bios\/ps2/i\            system\/configs\/multimedia_keys.conf \\' 
 echo "Repack squashfs"
 sudo mksquashfs /tmp/target ./filesystem.squashfs -noappend -comp zstd
 
-# zero out the original squashfs file and trim any blank space
-echo "zero out the original squashfs file and trim any blank space"
+# Unmount
+echo "Unmount overlay"
+sudo umount --type="overlay" /tmp/target
+echo "Unmount squashfs"
+sudo umount --type="squashfs" /tmp/squashfs
+
+# zero out all space in the original image file
+echo "zero out all space in the original image file. an error from dd (no space left on device) is expected here"
 sudo dd if=/dev/zero of=/mnt/image/boot/batocera bs=1M status=progress
 sleep 5
 sudo rm /mnt/image/boot/batocera
@@ -62,11 +68,7 @@ df -h /mnt/image
 echo "Copy squashfs back to image"
 sudo cp filesystem.squashfs /mnt/image/boot/batocera
 
-# Unmount
-echo "Unmount overlay"
-sudo umount --type="overlay" /tmp/target
-echo "Unmount squashfs"
-sudo umount --type="squashfs" /tmp/squashfs
+# unmount
 echo "Unmount image"
 sudo umount /mnt/image
 
