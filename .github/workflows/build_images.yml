@@ -98,7 +98,7 @@ jobs:
           #   PSPI_IMAGE_NAME: "Recalbox.Zero2.PSPi6.v${{ needs.run-gitversion.outputs.version }}.img.gz"
           #   VERSION: ${{ needs.run-gitversion.outputs.version }}
           - os: batocera
-            DOWNLOAD_URL: "https://stpspiproduseast001.blob.core.windows.net/pspi6/batocera-bcm2711-bcm2711-39-20240228.img.gz"
+            DOWNLOAD_URL: "https://updates.batocera.org/bcm2711/stable/last/batocera-bcm2711-bcm2711-39-20240228.img.gz"
             COMPRESSED_IMAGE_NAME: "batocera-bcm2711-bcm2711-39-20240228.img.gz"
             IMAGE_NAME: "batocera-bcm2711-bcm2711-39-20240228.img"
             PSPI_IMAGE_NAME: "Batocera.CM4.PSPi6.v${{ needs.run-gitversion.outputs.version }}.img.gz"
