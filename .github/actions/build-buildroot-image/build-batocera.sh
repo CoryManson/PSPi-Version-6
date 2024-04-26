@@ -9,8 +9,8 @@ cd images
 
 # Create mount directory and mount image file
 echo "Make mount directory and mount image"
-sudo mkdir -p /mnt/rootfs
-sudo mount -o loop,offset=$((512*2048)) $IMAGE_NAME /mnt/rootfs
+sudo mkdir -p /mnt/image /mnt/squashfs /tmp/upper /tmp/work /tmp/target
+sudo mount -o loop,offset=$((512*2048)) $IMAGE_NAME /mnt/image
 
 # Add files to /boot
 echo "Add files to /boot"
@@ -23,45 +23,52 @@ sudo cp $GITHUB_WORKSPACE/rpi/drivers/bin/* /mnt/rootfs/drivers/
 echo "Copy squashfs to working directory"
 sudo cp /mnt/rootfs/boot/batocera ./batocera
 
-# Unpack squashfs
-echo "Unpack squashfs"
-unsquashfs batocera
+# Mount squashfs
+echo "Mount squashfs"
+sudo mount --type="squashfs" --options="loop" --source="batocera" --target="/mnt/squashfs"
+# Mount overlay
+echo "Mount overlay"
+sudo mount --type="overlay" --options="lowerdir=/mnt/squashfs,upperdir=/tmp/upper,workdir=/tmp/work" --source="overlay" --target="/tmp/target"
 
 # Add custom.sh
 echo "Add custom.sh"
-cp $GITHUB_WORKSPACE/rpi/scripts/batocera/custom.sh ./squashfs-root/usr/share/batocera/datainit/system/custom.sh
-chmod +x ./squashfs-root/usr/share/batocera/datainit/system/custom.sh
+sudo cp $GITHUB_WORKSPACE/rpi/scripts/batocera/custom.sh /tmp/target/usr/share/batocera/datainit/system/custom.sh
+sudo chmod +x /tmp/target/usr/share/batocera/datainit/system/custom.sh
 
 # Update S12populateshare to copy custom.sh into system at boot
 echo "Update S12populateshare to copy custom.sh into system at boot"
-sed -i '/bios\/ps2/i\            system\/custom.sh \\' ./squashfs-root/etc/init.d/S12populateshare
+sudo sed -i '/bios\/ps2/i\            system\/custom.sh \\' /tmp/target/etc/init.d/S12populateshare
 
 # Add driver libraries
 echo "Add driver libraries"
-cp $GITHUB_WORKSPACE/rpi/libraries/batocera/* ./squashfs-root/usr/lib/
+sudo cp $GITHUB_WORKSPACE/rpi/libraries/batocera/* /tmp/target/usr/lib/
 
 # Add Multimedia keys for volume control
 echo "Add Multimedia keys for volume control"
-cp $GITHUB_WORKSPACE/rpi/configs/batocera/multimedia_keys.conf ./squashfs-root/usr/share/batocera/datainit/system/configs/multimedia_keys.conf
+sudo cp $GITHUB_WORKSPACE/rpi/configs/batocera/multimedia_keys.conf /tmp/target/usr/share/batocera/datainit/system/configs/multimedia_keys.conf
 
 # update S12populateshare to copy multimedia_keys.conf into system at boot
 echo "Update S12populateshare to copy multimedia_keys.conf into system at boot"
-sed -i '/bios\/ps2/i\            system\/configs\/multimedia_keys.conf \\' ./squashfs-root/etc/init.d/S12populateshare
+sudo sed -i '/bios\/ps2/i\            system\/configs\/multimedia_keys.conf \\' /tmp/target/etc/init.d/S12populateshare
 
 # repack squashfs
 echo "Repack squashfs"
-mksquashfs squashfs-root filesystem.squashfs -comp zstd
+mksquashfs /tmp/target ./filesystem.squashfs -noappend
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
 sudo cp filesystem.squashfs /mnt/rootfs/boot/batocera
 
-# Unmount image
-echo "Unmount image"
+# Unmount
+echo "Unmount overlay"
+sudo umount --type="overlay" /tmp/target
+echo "Unmount squashfs"
+sudo umount --type="squashfs" /mnt/squashfs
+echo "Unmount rootfs"
 sudo umount /mnt/rootfs
 
-# Recompress image
-echo "Recompress image"
+# Compress image
+echo "Compress image"
 gzip -9 $IMAGE_NAME
 echo "Move image to completed_images & rename"
 mv $IMAGE_NAME.gz ../completed_images/$PSPI_IMAGE_NAME
