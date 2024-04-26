@@ -80,15 +80,15 @@ runs:
       id: detect-large-images
       run: |
         count="$(find -type f -name "*.xz" -size +2G | wc -l)"
-        if [ "$count" == "0" ]
+        if [ "$count" -ge 1 ]
         then
-          echo "No images to add to release"
+          echo "Found images larger than 2G, will not add to release"
           echo "SKIP_RELEASE=true" >> "$GITHUB_OUTPUT"
         else
-          echo "Found images to add to release"
+          echo "Found images smaller than 2G, will add to release"
           echo "SKIP_RELEASE=false" >> "$GITHUB_OUTPUT"
         fi
-      working-directory: packer/plugins/packer-builder-arm
+      working-directory: ${{ runner.temp }}/completed_images
       shell: bash
 
     # Upload files to azure storage account
@@ -110,7 +110,7 @@ runs:
         do
           azcopy copy "$i" "https://${{ inputs.AZCOPY_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/pspi6/$i"
         done
-      working-directory: packer/plugins/packer-builder-arm
+      working-directory: ${{ runner.temp }}/completed_images
       shell: bash
 
     # Update github release
