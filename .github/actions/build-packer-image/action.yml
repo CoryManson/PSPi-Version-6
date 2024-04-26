@@ -97,6 +97,7 @@ runs:
 
     # Upload files to azure storage account
     - name: Upload files to storage account
+      if: inputs.build == 'kali.*'
       run: |
         export AZCOPY_AUTO_LOGIN_TYPE=SPN
         export AZCOPY_SPA_APPLICATION_ID=${{ inputs.AZCOPY_SPA_APPLICATION_ID }}
@@ -118,6 +119,7 @@ runs:
 
     # Delete images larger than 2GB and set skipRelease flag
     - name: delete large images
+      if: inputs.build == 'kali.*'
       id: delete-large-images
       run: |
         # Delete images larger than 2G
