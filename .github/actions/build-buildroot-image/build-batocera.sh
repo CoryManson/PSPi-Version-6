@@ -50,7 +50,7 @@ sed -i '/bios\/ps2/i\            system\/configs\/multimedia_keys.conf \\' ./squ
 
 # repack squashfs
 echo "Repack squashfs"
-mksquashfs squashfs-root filesystem.squashfs -comp xz
+mksquashfs squashfs-root filesystem.squashfs -comp zstd
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"

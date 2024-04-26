@@ -44,7 +44,7 @@ cp $GITHUB_WORKSPACE/rpi/libraries/recalbox/* ./squashfs-root/usr/lib/
 
 # repack squashfs
 echo "Repack squashfs"
-mksquashfs squashfs-root filesystem.squashfs -comp xz
+mksquashfs squashfs-root filesystem.squashfs -comp zstd
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"

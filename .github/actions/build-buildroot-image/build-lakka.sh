@@ -42,7 +42,7 @@ sudo cp $GITHUB_WORKSPACE/rpi/configs/lakka/PSPi-Controller.cfg ./squashfs-root/
 
 # Repack squashfs
 echo "Repack squashfs"
-sudo mksquashfs squashfs-root filesystem.squashfs -comp xz
+sudo mksquashfs squashfs-root filesystem.squashfs -comp zstd
 
 # Copy squashfs back to image
 echo "Copy squashfs back to image"
