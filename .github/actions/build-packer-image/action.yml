@@ -103,6 +103,7 @@ runs:
         if [ "$count" -ge 1 ]
         then
           echo "Found images larger than 2G, will not add to release"
+          echo "::notice file=${{ inputs.pspi_image_name }},title=large image::Image larger than 2GB found. Please update release notes with storage account link."
           echo "SKIP_RELEASE=true" >> "$GITHUB_OUTPUT"
         else
           echo "Found images smaller than 2G, will add to release"
@@ -140,6 +141,7 @@ runs:
       with:
         tag_name: v${{ inputs.version }}
         name: Release v${{ inputs.version }}
+        body_path: .github/workflows/RELEASE_FORMAT.txt
         draft: true
         fail_on_unmatched_files: true
         files: |
