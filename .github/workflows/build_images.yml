@@ -6,7 +6,7 @@ on:
       version:
         description: 'Version to build'
         required: true
-        default: 'v0.0.0'
+        default: '0.0.0'
   push:
     branches:
       - main
