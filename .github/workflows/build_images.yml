@@ -55,11 +55,11 @@ jobs:
         with:
           build: 'drivers.*'
           createRelease: true
-          version: ${{ GITHUB_EVENT_NAME == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
+          version: ${{ github.event.name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
 
   build-packer-images:
     env:
-      VERSION: ${{ GITHUB_EVENT_NAME == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
+      VERSION: ${{ github.event.name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
     strategy:
       matrix:
         # Resolves to the packer image name
@@ -84,7 +84,7 @@ jobs:
 
   build-buildroot-images:
     env:
-      VERSION: ${{ GITHUB_EVENT_NAME == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
+      VERSION: ${{ github.event.name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
     strategy:
       matrix:
         image:
