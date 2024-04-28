@@ -2,7 +2,6 @@ build {
   name = "raspios"
 
   sources = [
-    "arm.raspios_zero_arm",
     "arm.raspios_cm4_zero2_arm64"
   ]
 
