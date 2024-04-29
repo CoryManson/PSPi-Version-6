@@ -74,11 +74,11 @@ runs:
 
         # Check file extension of downloaded checksum
         if [[ ${{ inputs.checksum_type }} == sha256 ]]; then
-          sha256sum -c $GITHUB_ACTION_PATH/download_hashes
+          sha256sum -c $GITHUB_ACTION_PATH/checksums
         elif [[ ${{ inputs.checksum_type }} == sha1 ]]; then
-          sha1sum -c $GITHUB_ACTION_PATH/download_hashes
+          sha1sum -c $GITHUB_ACTION_PATH/checksums
         elif [[ ${{ inputs.checksum_type }} == md5 ]]; then
-          md5sum -c $GITHUB_ACTION_PATH/download_hashes
+          md5sum -c $GITHUB_ACTION_PATH/checksums
         else
           echo "Unknown checksum file extension"
           exit 1
