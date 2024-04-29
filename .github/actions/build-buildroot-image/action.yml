@@ -1,5 +1,5 @@
-name: Build Lakka Image
-description: 'Build PSPi Recalbox image'
+name: Build BUildroot Image
+description: 'Build PSPi image'
 inputs:
   os:
     description: 'Operating system to build'
