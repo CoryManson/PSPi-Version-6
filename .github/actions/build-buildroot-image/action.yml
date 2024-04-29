@@ -1,4 +1,4 @@
-name: Build BUildroot Image
+name: Build Buildroot Image
 description: 'Build PSPi image'
 inputs:
   os:
