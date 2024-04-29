@@ -19,8 +19,8 @@ inputs:
   version:
     description: 'gitversion version output'
     required: true
-  checksum_url:
-    description: 'Checksum URL for image'
+  checksum_type:
+    description: 'Checksum type'
     required: true
   AZCOPY_TENANT_ID:
     description: 'Azure Tenant ID'
@@ -71,15 +71,14 @@ runs:
         mkdir -p images
         cd downloads
         wget -nv -O ${{ inputs.compressed_image_name }} ${{ inputs.download_url }}
-        wget -nv -O filehash ${{ inputs.checksum_url }}
 
         # Check file extension of downloaded checksum
-        if [[ ${{ inputs.checksum_url }} == *.sha256 ]]; then
-          sha256sum -c filehash
-        elif [[ ${{ inputs.checksum_url }} == *.sha1 ]]; then
-          sha1sum -c filehash
-        elif [[ ${{ inputs.checksum_url }} == *.md5 ]]; then
-          md5sum -c filehash
+        if [[ ${{ inputs.checksum_type }} == sha256 ]]; then
+          sha256sum -c $GITHUB_ACTION_PATH/download_hashes
+        elif [[ ${{ inputs.checksum_type }} == sha1 ]]; then
+          sha1sum -c $GITHUB_ACTION_PATH/download_hashes
+        elif [[ ${{ inputs.checksum_type }} == md5 ]]; then
+          md5sum -c $GITHUB_ACTION_PATH/download_hashes
         else
           echo "Unknown checksum file extension"
           exit 1
