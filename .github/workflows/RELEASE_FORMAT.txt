@@ -29,7 +29,7 @@ Image default usernames and passwords.
 
 [Accessing Batocera via SSH](https://wiki.batocera.org/access_the_batocera_via_ssh)
 
-This image does not accept customisations via Rapsberry Pi Imager
+This image does not support customisations via Raspberry Pi Imager
 
 Username: `root`  
 Password: `linux`
@@ -40,7 +40,7 @@ Password: `linux`
 
 [Accessing Lakka command line interface](https://www.lakka.tv/doc/Accessing-Lakka-command-line-interface/)
 
-This image does not accept customisations via Raspberry Pi Imager
+This image does not support customisations via Raspberry Pi Imager
 
 Username: `root`  
 Password: `root`
@@ -51,7 +51,7 @@ Password: `root`
 
 [Root access via Terminal CLI](https://wiki.recalbox.com/en/tutorials/system/access/root-access-terminal-cli)
 
-This image does not accept customisations via Raspberry Pi Imager
+This image does not support customisations via Raspberry Pi Imager
 
 Username: `root`  
 Password: `recalbox`
@@ -62,7 +62,7 @@ Password: `recalbox`
 
 [How to SSH with RetroPie](https://retropie.org.uk/docs/SSH/)
 
-These images accept customisations via Raspberry Pi Imager
+These images support customisations via Raspberry Pi Imager
 
 Username: `pi`  
 Password: `raspberry`

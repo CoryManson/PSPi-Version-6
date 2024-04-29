@@ -144,6 +144,7 @@ jobs:
           image_name: ${{ matrix.image.IMAGE_NAME }}
           pspi_image_name: ${{ matrix.image.PSPI_IMAGE_NAME }}
           version: ${{ matrix.image.VERSION }}
+          checksum_url: ${{ matrix.image.CHECKSUM_URL }}
           AZCOPY_TENANT_ID: ${{ secrets.AZCOPY_TENANT_ID }}
           AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
           AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
