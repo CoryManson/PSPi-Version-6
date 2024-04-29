@@ -12,6 +12,12 @@ auto_initramfs=1
 # Use the kernel's default instead.
 disable_fw_kms_setup=1
 
+<<<<<<< HEAD
+=======
+# Run as fast as firmware / board allows
+arm_boost=1
+
+>>>>>>> ec1d612799ada1bcbc305de563039e6de107c777
 # Don't show splash screen
 disable_splash=1
 
