@@ -6,7 +6,7 @@
 arm_64bit=1
 
 # Specify the kernel image for 64-bit ARM architecture
-kernel=kernel8
+kernel=/boot/kernel8
 
 # Automatically load initramfs files, if found
 auto_initramfs=1
