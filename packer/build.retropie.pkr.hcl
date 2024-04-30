@@ -65,6 +65,14 @@ build {
     destination = "/etc/systemd/system/"
   }
 
+  # Remove problem kernel
+  provisioner "shell" {
+    inline = [
+      "sudo rm /boot/kernel7l.img",
+      "sudo rm /boot/kernel7.img"
+    ]
+  }
+
   # Reboot
   provisioner "shell" {
     execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
