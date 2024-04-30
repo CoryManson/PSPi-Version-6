@@ -65,6 +65,13 @@ build {
     destination = "/etc/systemd/system/"
   }
 
+  # Reboot
+  provisioner "shell" {
+    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    expect_disconnect = true
+    inline            = ["echo 'Reboot VM'", "reboot"]
+  }
+
   # Install pspi6 drivers & services
   provisioner "shell" {
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
