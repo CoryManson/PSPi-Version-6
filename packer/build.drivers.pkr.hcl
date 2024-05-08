@@ -20,19 +20,25 @@ build {
 
   # Force 32-bit userspace for armhf
   provisioner "shell" {
-    only            = ["arm.drivers_raspios_lite_armhf"]
+    only            = [
+      "arm.drivers_raspios_lite_armhf"
+    ]
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     inline          = [
-      "echo 'arm_64bit=0' | sudo tee -a /boot/config.txt"
+      "cat /boot/config.txt",
+      "echo 'arm_64bit=0' >> /boot/config.txt"
     ]
   }
 
   # Reboot armhf
   provisioner "shell" {
-    only            = ["arm.drivers_raspios_lite_armhf"]
-    execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    inline          = [
-      "sudo reboot"
+    only            = [
+      "arm.drivers_raspios_lite_armhf"
+    ]
+    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    expect_disconnect = true
+    inline            = [
+      "echo 'Reboot VM'", "reboot"
     ]
   }
 
