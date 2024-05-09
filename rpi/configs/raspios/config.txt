@@ -5,13 +5,6 @@
 # Enable 64-bit ARM architecture
 arm_64bit=1
 
-# Automatically load initramfs files, if found
-auto_initramfs=1
-
-# Don't have the firmware create an initial video= setting in cmdline.txt.
-# Use the kernel's default instead.
-disable_fw_kms_setup=1
-
 # Run as fast as firmware / board allows
 arm_boost=1
 
@@ -64,6 +57,9 @@ dpi_output_format=503863
 
 # Power off the Raspberry Pi when GPIO pin 44 is triggered
 # dtoverlay=gpio-poweroff,gpiopin=4,active_low=yes
+
+# Enable the PCF8563 Real Time Clock module
+dtoverlay=i2c-rtc,pcf8563
 
 # Enable the VC4 FKMS V3D overlay for graphics acceleration
 dtoverlay=vc4-fkms-v3d

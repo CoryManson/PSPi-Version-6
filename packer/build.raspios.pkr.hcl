@@ -31,19 +31,19 @@ build {
   # Upload config.txt
   provisioner "file" {
     source = "${path.root}/../rpi/configs/raspios/config.txt"
-    destination = "/boot/config.txt"
+    destination = "/boot/firmware/config.txt"
   }
 
   # Upload cm4.txt
   provisioner "file" {
     source = "${path.root}/../rpi/configs/cm4.txt"
-    destination = "/boot/cm4.txt"
+    destination = "/boot/firmware/cm4.txt"
   }
 
   # Upload pi0.txt
   provisioner "file" {
     source = "${path.root}/../rpi/configs/pi0.txt"
-    destination = "/boot/pi0.txt"
+    destination = "/boot/firmware/pi0.txt"
   }
 
   # Upload overlays
