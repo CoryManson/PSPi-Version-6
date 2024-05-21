@@ -55,7 +55,7 @@ build {
 
   # Upload start_mouse.sh
   provisioner "file" {
-    source = "${path.root}/../rpi/scripts/raspios/start_mouse.sh"
+    source = "${path.root}/../rpi/scripts/kali/start_mouse.sh"
     destination = "/usr/local/bin/start_mouse.sh"
   }
 
