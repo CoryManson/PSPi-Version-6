@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /boot/pspi.conf
+. /boot/firmware/pspi.conf
 modprobe i2c-dev
 
 echo "enable_dim: $enable_dim"
@@ -48,6 +48,4 @@ fi
 
 echo "Starting PSPi with parameters: $params"
 
-/boot/drivers/main$ARCH_SUFFIX $params &
-sleep 1
-/boot/drivers/osd$ARCH_SUFFIX &
+/usr/bin/main$ARCH_SUFFIX $params &

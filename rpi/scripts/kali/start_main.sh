@@ -48,6 +48,4 @@ fi
 
 echo "Starting PSPi with parameters: $params"
 
-/boot/drivers/main$ARCH_SUFFIX $params &
-sleep 1
-/boot/drivers/osd$ARCH_SUFFIX &
+/usr/bin/main$ARCH_SUFFIX $params &

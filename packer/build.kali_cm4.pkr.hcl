@@ -35,6 +35,24 @@ build {
     destination = "/usr/bin/"
   }
 
+  # Upload start_main.sh
+  provisioner "file" {
+    source = "${path.root}/../rpi/scripts/kali/start_main.sh"
+    destination = "/usr/local/bin/start_main.sh"
+  }
+
+  # Upload start_osd.sh
+  provisioner "file" {
+    source = "${path.root}/../rpi/scripts/kali/start_osd.sh"
+    destination = "/usr/local/bin/start_osd.sh"
+  }
+
+  # Upload start_mouse.sh
+  provisioner "file" {
+    source = "${path.root}/../rpi/scripts/raspios/start_mouse.sh"
+    destination = "/usr/local/bin/start_mouse.sh"
+  }
+
   # Upload services
   provisioner "file" {
     source = "${path.root}/../rpi/services/"
