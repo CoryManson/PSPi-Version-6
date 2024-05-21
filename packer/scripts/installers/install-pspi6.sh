@@ -91,5 +91,4 @@ add_services() {
     echo "Services added."
 }
 
-detect_architecture
 detect_os_and_setup_services
