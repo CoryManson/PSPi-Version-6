@@ -23,6 +23,12 @@ build {
     destination = "/boot/pi0.txt"
   }
 
+  # Upload pspi.conf
+  provisioner "file" {
+    source = "${path.root}/../rpi/configs/pspi.conf"
+    destination = "/boot/pspi.conf"
+  }
+
   # Upload overlays
   provisioner "file" {
     source = "${path.root}/../rpi/overlays/"

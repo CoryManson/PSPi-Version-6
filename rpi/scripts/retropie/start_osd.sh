@@ -1,10 +1,5 @@
 #!/bin/bash
 
-. /boot/pspi.conf
-modprobe i2c-dev
-
-echo "start_mouse: $start_mouse"
-
 # Function to detect the architecture of the operating system
 detect_architecture() {
     local arch
@@ -22,8 +17,4 @@ detect_architecture() {
 }
 detect_architecture
 
-echo "Starting PSPi with parameters: $params"
-
-if [ "$start_mouse" = "true" ]; then
-    /usr/bin/mouse$ARCH_SUFFIX
-fi
+/usr/bin/osd$ARCH_SUFFIX &

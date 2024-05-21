@@ -3,7 +3,7 @@
 . /boot/firmware/pspi.conf
 modprobe i2c-dev
 
-echo "start_mouse: $start_mouse"
+echo "enable_mouse: $enable_mouse"
 
 # Function to detect the architecture of the operating system
 detect_architecture() {
@@ -24,6 +24,6 @@ detect_architecture
 
 echo "Starting PSPi with parameters: $params"
 
-if [ "$start_mouse" = "true" ]; then
+if [ "$enable_mouse" = "true" ]; then
     /usr/bin/mouse$ARCH_SUFFIX
 fi
