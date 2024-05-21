@@ -1,6 +1,6 @@
 [Unit]
 Description=PSPi Main Service
-After=main.service
+After=network.target
 
 [Service]
 ExecStart=/usr/local/bin/start_osd.sh
