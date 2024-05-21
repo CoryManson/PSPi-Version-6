@@ -19,6 +19,9 @@ inputs:
   version:
     description: 'gitversion version output'
     required: true
+  createRelease:
+    description: 'Create a release'
+    default: 'false'
   checksum_type:
     description: 'Checksum type'
     required: true
@@ -144,7 +147,7 @@ runs:
 
     # Update github release
     - name: Update Release
-      if: steps.detect-large-images.outputs.SKIP_RELEASE == 'false' && github.ref == 'refs/heads/main'
+      if: steps.detect-large-images.outputs.SKIP_RELEASE == 'false' && github.ref == 'refs/heads/main' || ${{ inputs.createRelease }} == 'true'
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ inputs.version }}
