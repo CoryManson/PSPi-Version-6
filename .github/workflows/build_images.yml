@@ -9,7 +9,8 @@ on:
         default: '0.0.0'
       createRelease:
         description: 'Create a release'
-        default: 'false'
+        type: boolean
+        default: false
 
   push:
     branches:
