@@ -7,9 +7,10 @@ on:
         description: 'Release Version'
         required: true
         default: '0.0.0'
-       createRelease:
+      createRelease:
         description: 'Create a release'
         default: 'false'
+
   push:
     branches:
       - main
