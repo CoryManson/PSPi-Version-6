@@ -9,7 +9,7 @@ all: lib $(PROGRAMS)
 
 # Compile the lib part
 lib:
-    $(MAKE) -C lib CC=$(CC) CFLAGS="$(CFLAGS)"
+	$(MAKE) -C lib CC=$(CC) CFLAGS="$(CFLAGS)"
 
 # Individual program targets
 osd:
