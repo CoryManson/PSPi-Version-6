@@ -1,5 +1,9 @@
 #!/bin/bash
 
+. /boot/firmware/pspi.conf
+
+echo "disable_osd: $disable_osd"
+
 # Function to detect the architecture of the operating system
 detect_architecture() {
     local arch
@@ -17,4 +21,6 @@ detect_architecture() {
 }
 detect_architecture
 
-/usr/bin/osd$ARCH_SUFFIX
+if [ "$disable_osd" = "false" ]; then
+    /usr/bin/osd$ARCH_SUFFIX
+fi

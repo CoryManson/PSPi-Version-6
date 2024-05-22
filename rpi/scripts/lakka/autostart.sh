@@ -8,6 +8,7 @@ echo "fast_mode: $fast_mode"
 echo "disable_crc: $disable_crc"
 echo "disable_gamepad: $disable_gamepad"
 echo "joysticks: $joysticks"
+echo "disable_osd: $disable_osd"
 
 params=""
 
@@ -48,5 +49,8 @@ fi
 echo "Starting PSPi with parameters: $params"
 
 /flash/drivers/main$ARCH_SUFFIX $params &
-sleep 1
-/flash/drivers/osd$ARCH_SUFFIX &
+
+if [ "$disable_osd" = "false" ]; then
+    sleep 1
+    /flash/drivers/osd$ARCH_SUFFIX &
+fi
