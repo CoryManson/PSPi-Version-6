@@ -27,8 +27,10 @@ apt-get install make libraspberrypi-dev raspberrypi-kernel-headers libpng-dev li
 
 mkdir -p /packer/drivers/bin
 cd /packer/drivers
-make --file Makefile$ARCH_SUFFIX clean
-make --file Makefile$ARCH_SUFFIX all
+# make --file Makefile$ARCH_SUFFIX clean
+# make --file Makefile$ARCH_SUFFIX all
+make --file Makefile_32 clean
+make --file Makefile_32 all
 
 # Build patchelf
 git clone https://github.com/NixOS/patchelf.git
