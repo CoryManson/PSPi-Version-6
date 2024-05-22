@@ -11,6 +11,12 @@ on:
         description: 'Create a release'
         type: boolean
         default: false
+  workflow_call:
+    inputs:
+      createRelease:
+        description: 'Create a release'
+        type: boolean
+        default: false
 
   push:
     branches:
