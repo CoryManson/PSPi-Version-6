@@ -48,4 +48,4 @@ fi
 
 echo "Starting PSPi with parameters: $params"
 
-/usr/bin/main$ARCH_SUFFIX $params &
+/usr/bin/main$ARCH_SUFFIX $params

@@ -17,4 +17,4 @@ detect_architecture() {
 }
 detect_architecture
 
-/usr/bin/osd$ARCH_SUFFIX &
+/usr/bin/osd$ARCH_SUFFIX
