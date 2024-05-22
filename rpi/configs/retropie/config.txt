@@ -62,6 +62,9 @@ dpi_output_format=503863
 # Power off the Raspberry Pi when GPIO pin 44 is triggered
 # dtoverlay=gpio-poweroff,gpiopin=4,active_low=yes
 
+# Enable the PCF8563 Real Time Clock module
+dtoverlay=i2c-rtc,pcf8563
+
 # Limit the number of framebuffers to 1 for better performance
 max_framebuffers=1
 
@@ -70,6 +73,9 @@ max_framebuffers=1
 dtoverlay=vc4-fkms-v3d,cma-512
 
 include cm4.txt
+
+# Set up CM4 audio pin
+dtoverlay=oldaudiocm4
 
 [pi0]
 # Enable the VC4 FKMS V3D overlay for graphics acceleration
