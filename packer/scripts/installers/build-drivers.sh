@@ -23,7 +23,7 @@ detect_architecture
 
 # Install Dependencies
 apt-get update
-apt-get install make libraspberrypi-dev raspberrypi-kernel-headers libpng-dev libasound2-dev git autoconf -y
+apt-get install make libraspberrypi-dev raspberrypi-kernel-headers libpng-dev libasound2-dev git autoconf gcc-arm-linux-gnueabi -y
 
 mkdir -p /packer/drivers/bin
 cd /packer/drivers
