@@ -1,6 +1,8 @@
 source "arm" "drivers_raspios_lite_armhf" {
-  file_urls             = ["https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz"]
-  file_checksum_url     = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz.sha256"
+  # file_urls             = ["https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz"]
+  # file_checksum_url     = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz.sha256"
+  file_urls             = ["https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz"]
+  file_checksum_url     = "https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz.sha256"
   file_checksum_type    = "sha256"
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
@@ -32,8 +34,10 @@ source "arm" "drivers_raspios_lite_armhf" {
   image_chroot_env             = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
 
   # qemu binary paths
-  qemu_binary_source_path      = "/usr/bin/qemu-arm-static"
-  qemu_binary_destination_path = "/usr/bin/qemu-arm-static"
+  qemu_binary_source_path      = "/usr/bin/qemu-aarch64-static"
+  qemu_binary_destination_path = "/usr/bin/qemu-aarch64-static"
+  # qemu_binary_source_path      = "/usr/bin/qemu-arm-static"
+  # qemu_binary_destination_path = "/usr/bin/qemu-arm-static"
 }
 
 source "arm" "drivers_raspios_lite_arm64" {
