@@ -21,6 +21,14 @@ build {
     ]
   }
 
+  # Update Kernel
+  provisioner "shell" {
+    inline = [
+      "echo 'Update Kernel'",
+      "sudo rpi-update 30a6adaded0241842a58fecb70ca4ed99bac0e35"
+    ]
+  }
+
   # Reboot
   provisioner "shell" {
     execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
