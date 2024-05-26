@@ -5,6 +5,15 @@ build {
     "arm.raspios_cm4_zero2_arm64"
   ]
 
+  # Update Kernel
+  provisioner "shell" {
+    inline = [
+      "echo 'Update Kernel'",
+      "echo -e 'y' | sudo rpi-update 30a6adaded0241842a58fecb70ca4ed99bac0e35"
+    ]
+    expect_disconnect = true
+  }
+
   # Configure raspberry pi
   provisioner "shell" {
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
@@ -19,15 +28,6 @@ build {
     scripts = [
       "${path.root}scripts/installers/apt.sh"
     ]
-  }
-
-  # Update Kernel
-  provisioner "shell" {
-    inline = [
-      "echo 'Update Kernel'",
-      "echo -e 'y' | sudo rpi-update 30a6adaded0241842a58fecb70ca4ed99bac0e35"
-    ]
-    expect_disconnect = true
   }
 
   # Reboot
