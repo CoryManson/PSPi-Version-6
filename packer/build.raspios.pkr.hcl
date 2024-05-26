@@ -9,7 +9,7 @@ build {
   provisioner "shell" {
     inline = [
       "echo 'Update Kernel'",
-      "echo -e 'y' | sudo rpi-update 30a6adaded0241842a58fecb70ca4ed99bac0e35"
+      "echo -e 'y' | sudo rpi-update 30a6adaded0241842a58fecb70ca4ed99bac0e35 SKIP_BOOTLOADER=1"
     ]
     expect_disconnect = true
   }
