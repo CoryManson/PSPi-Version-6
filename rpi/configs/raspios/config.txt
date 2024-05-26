@@ -69,7 +69,7 @@ dtoverlay=i2c-rtc,pcf8563
 dtoverlay=vc4-fkms-v3d
 
 # Enable the VC4 KMS DPI overlay for generic displays with BGR color order
-dtoverlay=vc4-kms-dpi-generic,rgb-order=bgr
+dtoverlay=vc4-kms-dpi-generic,rgb-order=grb
 
 # Limit the number of framebuffers to 1 for better performance
 max_framebuffers=1
