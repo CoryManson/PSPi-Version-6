@@ -71,7 +71,7 @@ build {
   provisioner "file" {
     source = "${path.root}/../rpi/libraries/raspios/"
     destination = "/usr/lib/"
-  }
+  }  
 
   # Upload drivers
   provisioner "file" {
