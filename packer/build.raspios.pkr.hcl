@@ -27,6 +27,7 @@ build {
       "echo 'Update Kernel'",
       "echo -e 'y' | sudo rpi-update 30a6adaded0241842a58fecb70ca4ed99bac0e35"
     ]
+    expect_disconnect = true
   }
 
   # Reboot
