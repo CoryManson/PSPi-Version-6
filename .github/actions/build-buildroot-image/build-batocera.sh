@@ -52,7 +52,7 @@ sudo sed -i '/bios\/ps2/i\            system\/configs\/multimedia_keys.conf \\' 
 
 # Add PortMaster
 echo "Add PortMaster"
-sudo cp $GITHUB_WORKSPACE/rpi/configs/batocera/portmaster/* /tmp/target/usr/share/batocera/datainit/roms/ports/
+sudo cp -r $GITHUB_WORKSPACE/rpi/configs/batocera/portmaster/ /tmp/target/usr/share/batocera/datainit/roms/ports/
 
 # repack squashfs
 echo "Repack squashfs"
