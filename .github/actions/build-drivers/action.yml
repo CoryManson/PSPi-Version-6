@@ -27,10 +27,10 @@ runs:
       run: |
         mkdir -p $GITHUB_WORKSPACE/packer/plugins
         cd $GITHUB_WORKSPACE/packer/plugins
-        git clone https://github.com/michalfita/packer-plugin-cross
+        git clone --branch development https://github.com/michalfita/packer-plugin-cross
         cd packer-plugin-cross
         go mod download
-        go build
+        go build .
       shell: bash
 
     # Build driver image
