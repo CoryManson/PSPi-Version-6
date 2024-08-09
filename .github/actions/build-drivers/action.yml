@@ -22,36 +22,29 @@ runs:
         sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar parted qemu-utils
       shell: bash
 
-    # Install packer 1.10.3
-    - name: Install packer 1.10.3
-      run: |
-        wget https://releases.hashicorp.com/packer/1.10.3/packer_1.10.3_linux_amd64.zip
-        unzip -o -qq packer_1.10.3_linux_amd64.zip -d /usr/local/bin
-      shell: bash
-
-    # Install packer arm plugin
-    - name: Install packer-builder-arm
+     # Install packer cross plugin
+    - name: Install packer-plugin-cross
       run: |
         mkdir -p $GITHUB_WORKSPACE/packer/plugins
         cd $GITHUB_WORKSPACE/packer/plugins
-        git clone https://github.com/mkaczanowski/packer-builder-arm
-        cd packer-builder-arm
+        git clone https://github.com/michalfita/packer-plugin-cross
+        cd packer-plugin-cross
         go mod download
-        go build -v .
+        go build
       shell: bash
 
     # Build driver image
     - name: Build 32-bit driver image
       run: |
         sudo -E QEMU_CPU=armv6l packer build -only "drivers.arm.drivers_raspios_lite_armhf" "$GITHUB_WORKSPACE/packer/"
-      working-directory: packer/plugins/packer-builder-arm
+      working-directory: packer/plugins/packer-plugin-cross
       shell: bash
 
     # Build driver image
     - name: Build 64-bit driver image
       run: |
         sudo -E QEMU_CPU=arm7l packer build -only "drivers.arm.drivers_raspios_lite_arm64" "$GITHUB_WORKSPACE/packer/"
-      working-directory: packer/plugins/packer-builder-arm
+      working-directory: packer/plugins/packer-plugin-cross
       shell: bash      
 
     # Extract drivers from image & zip for release

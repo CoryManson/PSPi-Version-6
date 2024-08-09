@@ -56,7 +56,7 @@ runs:
     - name: Build images
       run: |
         sudo packer build -only ${{ inputs.build }}.* -var pspi_version=v${{ inputs.version }} "$GITHUB_WORKSPACE/packer/"
-      working-directory: packer/plugins/packer-builder-arm
+      working-directory: packer/plugins/packer-plugin-cross
       shell: bash
 
     # Shrink images
@@ -68,7 +68,7 @@ runs:
         do
           sudo ./pishrink.sh -v -z -a "$i"
         done
-      working-directory: packer/plugins/packer-builder-arm
+      working-directory: packer/plugins/packer-plugin-cross
       shell: bash
 
     # Generate sha256 filehash of image files
@@ -78,7 +78,7 @@ runs:
         do
           sha256sum "$i" | awk '{print $1}' > "$i.sha256"
         done
-      working-directory: packer/plugins/packer-builder-arm
+      working-directory: packer/plugins/packer-plugin-cross
       shell: bash
 
     # Update github release
@@ -92,8 +92,8 @@ runs:
         draft: true
         fail_on_unmatched_files: true
         files: |
-          packer/plugins/packer-builder-arm/*.img.gz
-          packer/plugins/packer-builder-arm/*.img.gz.sha256
+          packer/plugins/packer-plugin-cross/*.img.gz
+          packer/plugins/packer-plugin-cross/*.img.gz.sha256
 
     # Upload artifacts
     - name: Upload artifacts
@@ -102,5 +102,5 @@ runs:
         name: ${{ inputs.build }}
         retention-days: 7
         path: |
-          packer/plugins/packer-builder-arm/*.img.gz
-          packer/plugins/packer-builder-arm/*.img.gz.sha256
+          packer/plugins/packer-plugin-cross/*.img.gz
+          packer/plugins/packer-plugin-cross/*.img.gz.sha256
