@@ -20,6 +20,7 @@ runs:
         echo "Create release value is ${{ inputs.createRelease }}"
         sudo apt-get update
         sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar parted qemu-utils
+        qemu -cpu ?
       shell: bash
 
     # Build driver image
