@@ -19,7 +19,7 @@ runs:
       run: |
         echo "Create release value is ${{ inputs.createRelease }}"
         sudo apt-get update
-        sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar parted qemu-utils binfmt-support
+        sudo apt-get install fdisk gdisk qemu qemu-user-static libarchive-tools tar parted qemu-utils binfmt-support
       shell: bash
 
     # Build driver image
@@ -34,7 +34,7 @@ runs:
     - name: Build 64-bit driver image
       run: |
         packer init ./
-        sudo -E QEMU_CPU=armv7 packer build -only "drivers.cross.drivers_raspios_lite_arm64" "$GITHUB_WORKSPACE/packer/"
+        sudo packer build -only "drivers.cross.drivers_raspios_lite_arm64" "$GITHUB_WORKSPACE/packer/"
       working-directory: packer
       shell: bash      
 
