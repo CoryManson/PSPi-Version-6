@@ -2,8 +2,8 @@ build {
   name = "retropie"
 
   sources = [
-    "arm.retropie_zero2_arm64",
-    "arm.retropie_cm4_arm64"
+    "cross.retropie_zero2_arm64",
+    "cross.retropie_cm4_arm64"
   ]
 
   # Configure raspberry pi
@@ -61,9 +61,13 @@ build {
 
   # Upload drivers
   provisioner "file" {
-    source = "${path.root}/../rpi/configs/retropie/drivers/"
+    source = "${path.root}/../rpi/drivers/bin/"
     destination = "/usr/bin/"
   }
+  # provisioner "file" {
+  #   source = "${path.root}/../rpi/configs/retropie/drivers/"
+  #   destination = "/usr/bin/"
+  # }
 
   # Upload start_main.sh
   provisioner "file" {

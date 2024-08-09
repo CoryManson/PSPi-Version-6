@@ -1,4 +1,4 @@
-source "arm" "drivers_raspios_lite_armhf" {
+source "cross" "drivers_raspios_lite_armhf" {
   file_urls             = ["https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz"]
   file_checksum_url     = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz.sha256"
   file_checksum_type    = "sha256"
@@ -36,7 +36,7 @@ source "arm" "drivers_raspios_lite_armhf" {
   qemu_binary_destination_path = "/usr/bin/qemu-arm-static"
 }
 
-source "arm" "drivers_raspios_lite_arm64" {
+source "cross" "drivers_raspios_lite_arm64" {
   file_urls             = ["https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz"]
   file_checksum_url     = "https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz.sha256"
   file_checksum_type    = "sha256"

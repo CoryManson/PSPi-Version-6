@@ -2,7 +2,7 @@ build {
   name = "kali_zero2"
 
   sources = [
-    "arm.kali_zero2_armhf"
+    "cross.kali_zero2_armhf"
   ]
 
   # Upload config.txt
