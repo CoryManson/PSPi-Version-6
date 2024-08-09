@@ -28,7 +28,7 @@ runs:
     - name: Build 32-bit driver image
       run: |
         packer init ./
-        sudo -E QEMU_CPU=armv6 packer build -only "drivers.cross.drivers_raspios_lite_armhf" "$GITHUB_WORKSPACE/packer/"
+        sudo -E QEMU_CPU=ARM11MPcore packer build -only "drivers.cross.drivers_raspios_lite_armhf" "$GITHUB_WORKSPACE/packer/"
       working-directory: packer
       shell: bash
 
