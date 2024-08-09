@@ -64,7 +64,6 @@ jobs:
       - name: Build Drivers
         uses: ./.github/actions/build-drivers
         with:
-          build: 'drivers.*'
           createRelease: ${{ inputs.createRelease }}
           version: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
 

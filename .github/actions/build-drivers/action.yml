@@ -41,11 +41,18 @@ runs:
       shell: bash
 
     # Build driver image
-    - name: Build driver image
+    - name: Build 32-bit driver image
       run: |
-        sudo packer build -only ${{ inputs.build }} "$GITHUB_WORKSPACE/packer/"
+        sudo -E QEMU_CPU=armv6l packer build -only "drivers.arm.drivers_raspios_lite_armhf" "$GITHUB_WORKSPACE/packer/"
       working-directory: packer/plugins/packer-builder-arm
       shell: bash
+
+    # Build driver image
+    - name: Build 64-bit driver image
+      run: |
+        sudo -E QEMU_CPU=arm7l packer build -only "drivers.arm.drivers_raspios_lite_arm64" "$GITHUB_WORKSPACE/packer/"
+      working-directory: packer/plugins/packer-builder-arm
+      shell: bash      
 
     # Extract drivers from image & zip for release
     - name: Extract drivers from image
