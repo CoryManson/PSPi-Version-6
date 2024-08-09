@@ -2,8 +2,8 @@ build {
   name = "drivers"
 
   sources = [
-    "cross.drivers_raspios_lite_armhf",
-    "cross.drivers_raspios_lite_arm64"
+    "source.cross.drivers_raspios_lite_armhf",
+    "source.cross.drivers_raspios_lite_arm64"
   ]
 
   # Create /packer directory

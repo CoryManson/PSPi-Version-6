@@ -23,21 +23,21 @@ runs:
       shell: bash
 
      # Install packer cross plugin
-    # - name: Install packer-plugin-cross
-    #   run: |
-    #     mkdir -p $GITHUB_WORKSPACE/packer/plugins
-    #     cd $GITHUB_WORKSPACE/packer/plugins
-    #     git clone --branch development https://github.com/michalfita/packer-plugin-cross
-    #     cd packer-plugin-cross
-    #     go mod download
-    #     go build -v .
-    #   shell: bash
+    - name: Install packer-plugin-cross
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/packer/plugins
+        cd $GITHUB_WORKSPACE/packer/plugins
+        git clone --branch development https://github.com/michalfita/packer-plugin-cross
+        cd packer-plugin-cross
+        go mod download
+        go build -v .
+      shell: bash
 
     # Build driver image
     - name: Build 32-bit driver image
       run: |
         sudo -E QEMU_CPU=armv6l packer build -only "drivers.cross.drivers_raspios_lite_armhf" "$GITHUB_WORKSPACE/packer/"
-      # working-directory: packer/plugins/packer-plugin-cross
+      working-directory: packer/plugins/packer-plugin-cross
       shell: bash
 
     # Build driver image
