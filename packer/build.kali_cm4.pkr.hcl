@@ -2,7 +2,7 @@ build {
   name = "kali_cm4"
 
   sources = [
-    "arm.kali_cm4_arm64"
+    "cross.kali_cm4_arm64"
   ]
 
   # Upload config.txt
