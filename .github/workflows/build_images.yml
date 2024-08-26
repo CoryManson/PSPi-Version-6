@@ -75,6 +75,7 @@ jobs:
         # Resolves to the packer image name
         os: [raspios, retropie]
     runs-on: ubuntu-latest
+    continue-on-error: true
     needs:
       - build-drivers
       - run-gitversion
@@ -140,6 +141,7 @@ jobs:
             PSPI_IMAGE_NAME: "Batocera40-Zero2-PSPi6-v${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}.img.gz"
             VERSION: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
     runs-on: ubuntu-latest
+    continue-on-error: true
     needs:
       - build-drivers
       - run-gitversion
