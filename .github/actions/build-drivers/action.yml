@@ -45,13 +45,6 @@ runs:
         cd $RUNNER_TEMP
         mkdir -p ./drivers
 
-        # Extract & rename 32bit drivers
-        tar --extract --file=PSPi6.Drivers_32bit.tar.gz ./packer/drivers/bin
-        for i in $(ls ./packer/drivers/bin)
-        do
-          mv "./packer/drivers/bin/$i" "./drivers/${i}_32"
-        done
-
         # Extract & rename 64bit drivers
         tar --extract --file=PSPi6.Drivers_64bit.tar.gz ./packer/drivers/bin
         for i in $(ls ./packer/drivers/bin)
