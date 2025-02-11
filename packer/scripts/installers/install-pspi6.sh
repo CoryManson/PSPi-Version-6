@@ -47,7 +47,7 @@ set_binary_permissions() {
     chmod +x /usr/bin/osd_64
     chmod +x /usr/local/bin/start_main.sh
     chmod +x /usr/local/bin/start_osd.sh
-    chmod +x /usr/local/bin/start_mouse.sh
+    [ -f /usr/local/bin/start_mouse.sh ] && chmod +x /usr/local/bin/start_mouse.sh
 }
 
 enable_i2c() {
