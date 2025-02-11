@@ -95,7 +95,7 @@ build {
       "${path.root}scripts/installers/install-pspi6.sh"
     ]
     env = {
-      "OS" = "Raspios"
+      "OS" = "RetroPie"
     }
   }
 
