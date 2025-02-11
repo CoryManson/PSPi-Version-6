@@ -2,7 +2,7 @@ build {
   name = "raspios"
 
   sources = [
-    "cross.raspios_cm4_zero2_arm64"
+    "source.cross.raspios_cm4_zero2_arm64"
   ]
 
   # Configure raspberry pi
