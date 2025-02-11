@@ -38,7 +38,7 @@ runs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install fdisk gdisk qemu qemu-user-static libarchive-tools tar parted qemu-utils binfmt-support
+        sudo apt-get install fdisk gdisk qemu-system qemu-user-static libarchive-tools tar parted qemu-utils binfmt-support
       shell: bash
 
     # Build images

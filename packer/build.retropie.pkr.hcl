@@ -2,8 +2,8 @@ build {
   name = "retropie"
 
   sources = [
-    "cross.retropie_zero2_arm64",
-    "cross.retropie_cm4_arm64"
+    "cross.retropie_zero2_armhf",
+    "cross.retropie_cm4_armhf"
   ]
 
   # Configure raspberry pi
