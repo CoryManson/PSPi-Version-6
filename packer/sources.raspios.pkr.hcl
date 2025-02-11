@@ -1,7 +1,6 @@
 source "cross" "raspios_cm4_zero2_arm64" {
   file_urls             = ["https://downloads.raspberrypi.com/raspios_arm64/images/raspios_arm64-2023-12-06/2023-12-05-raspios-bookworm-arm64.img.xz"]
-  # file_checksum_url     = "https://downloads.raspberrypi.com/raspios_arm64/images/raspios_arm64-2023-12-06/2023-12-05-raspios-bookworm-arm64.img.xz.sha256"
-  file_checksum         = "5c54f0572d61e443a32dfa80aa8d918049814bfc70ab977f2d545eef45f1658e"
+  file_checksum_url     = "https://downloads.raspberrypi.com/raspios_arm64/images/raspios_arm64-2023-12-06/2023-12-05-raspios-bookworm-arm64.img.xz.sha256"
   file_checksum_type    = "sha256"
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]

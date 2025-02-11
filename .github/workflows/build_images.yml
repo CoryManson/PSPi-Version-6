@@ -129,14 +129,14 @@ jobs:
           - os: batocera
             DOWNLOAD_URL: "https://mirrors.o2switch.fr/batocera/bcm2711/stable/41/batocera-bcm2711-41-20241217.img.gz"
             COMPRESSED_IMAGE_NAME: "batocera-bcm2711-41-20241217.img.gz"
-            IMAGE_NAME: "batocera-bcm2711-40-20240802.img"
+            IMAGE_NAME: "batocera-bcm2711-41-20241217.img"
             CHECKSUM_TYPE: "md5"
             PSPI_IMAGE_NAME: "Batocera41-CM4-PSPi6-v${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}.img.gz"
             VERSION: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
           - os: batocera
             DOWNLOAD_URL: "https://mirrors.o2switch.fr/batocera/bcm2837/stable/41/batocera-bcm2837-41-20241216.img.gz"
             COMPRESSED_IMAGE_NAME: "batocera-bcm2837-41-20241216.img.gz"
-            IMAGE_NAME: "batocera-bcm2837-40-20240803.img"
+            IMAGE_NAME: "batocera-bcm2837-41-20241216.img"
             CHECKSUM_TYPE: "md5"
             PSPI_IMAGE_NAME: "Batocera41-Zero2-PSPi6-v${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}.img.gz"
             VERSION: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || needs.run-gitversion.outputs.version }}
