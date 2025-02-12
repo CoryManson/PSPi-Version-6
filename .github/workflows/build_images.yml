@@ -34,7 +34,7 @@ on:
 
 jobs:
   run-gitversion:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       version: ${{ steps.gitversion.outputs.SemVer }}
     steps:
@@ -74,7 +74,7 @@ jobs:
       matrix:
         # Resolves to the packer image name
         os: [raspios, retropie]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     continue-on-error: true
     needs:
       - build-drivers
