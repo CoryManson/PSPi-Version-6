@@ -16,5 +16,17 @@ cd /opt
 git clone --depth=1 https://github.com/RetroPie/RetroPie-Setup.git
 cd RetroPie-Setup
 chmod +x /opt/RetroPie-Setup/retropie_packages.sh
-/opt/RetroPie-Setup/retropie_packages.sh setup basic_install
-/opt/RetroPie-Setup/retropie_packages.sh autostart enable
+
+modules=(
+    'setup basic_install'
+    'samba depends'
+    'samba install_shares'
+    'splashscreen default'
+    'splashscreen enable'
+    'bashwelcometweak'
+    'autostart enable'
+)
+
+for module in "\${modules[@]}"; do
+    /opt/RetroPie-Setup/retropie_packages.sh $module
+done
