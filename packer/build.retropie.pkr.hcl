@@ -82,6 +82,12 @@ build {
     destination = "/usr/local/bin/start_osd.sh"
   }
 
+  # Upload start_mouse.sh
+  provisioner "file" {
+    source = "${path.root}/../rpi/scripts/raspios/start_mouse.sh"
+    destination = "/usr/local/bin/start_mouse.sh"
+  }
+
   # Upload services
   provisioner "file" {
     source = "${path.root}/../rpi/services/"
