@@ -31,9 +31,9 @@ chmod +x /opt/RetroPie-Setup/retropie_packages.sh
 #     /opt/RetroPie-Setup/retropie_packages.sh $module
 # done
 /opt/RetroPie-Setup/retropie_packages.sh setup basic_install
-/opt/RetroPie-Setup/retropie_packages.sh samba depends
-/opt/RetroPie-Setup/retropie_packages.sh samba install_shares
-/opt/RetroPie-Setup/retropie_packages.sh splashscreen default
-/opt/RetroPie-Setup/retropie_packages.sh splashscreen enable
-/opt/RetroPie-Setup/retropie_packages.sh bashwelcometweak
+# /opt/RetroPie-Setup/retropie_packages.sh samba depends
+# /opt/RetroPie-Setup/retropie_packages.sh samba install_shares
+# /opt/RetroPie-Setup/retropie_packages.sh splashscreen default
+# /opt/RetroPie-Setup/retropie_packages.sh splashscreen enable
+# /opt/RetroPie-Setup/retropie_packages.sh bashwelcometweak
 /opt/RetroPie-Setup/retropie_packages.sh autostart enable
