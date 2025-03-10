@@ -74,7 +74,7 @@ jobs:
       matrix:
         # Resolves to the packer image name
         os: [raspios, retropie]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     continue-on-error: true
     needs:
       - build-drivers
