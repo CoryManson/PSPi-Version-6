@@ -105,13 +105,35 @@ build {
     }
   }
 
-  # Install retropie
+  # Upload retropie installer
+  provisioner "file" {
+    source = "${path.root}/scripts/installers/install-retropie.sh"
+    destination = "/usr/local/bin/install-retropie.sh"
+  }
+
+  # Upload retropie service
+  provisioner "file" {
+    source = "${path.root}/scripts/installers/install-retropie.sh"
+    destination = "/usr/local/bin/install-retropie.sh"
+  }
+
+  # Enable retropie service
   provisioner "shell" {
-    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    scripts = [
-      "${path.root}scripts/installers/install-retropie.sh"
+    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    expect_disconnect = true
+    inline            = [
+      "echo 'Enable RetroPie Service'", 
+      "systemctl enable install-retropie.service"
     ]
   }
+
+  # Install retropie
+  # provisioner "shell" {
+  #   execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+  #   scripts = [
+  #     "${path.root}scripts/installers/install-retropie.sh"
+  #   ]
+  # }
 
   # Reboot
   provisioner "shell" {
