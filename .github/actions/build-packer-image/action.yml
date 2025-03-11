@@ -59,6 +59,7 @@ runs:
             rm "$i"
           fi
         done
+        ls -lh *.img.gz *.7z.*
       working-directory: packer
       shell: bash
 
