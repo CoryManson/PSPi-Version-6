@@ -110,9 +110,9 @@ runs:
         fail_on_unmatched_files: false
         files: |
           ${{ runner.temp }}/completed_images/*.img.gz
-          ${{ runner.temp }}/completed_images/*.img.gz.part
+          ${{ runner.temp }}/completed_images/*.img.gz.part*
           ${{ runner.temp }}/completed_images/*.img.gz.sha256
-          ${{ runner.temp }}/completed_images/*.img.gz.part.sha256
+          ${{ runner.temp }}/completed_images/*.img.gz.part*.sha256
 
     # Upload artifacts
     - name: Upload artifacts
@@ -122,6 +122,6 @@ runs:
         retention-days: 7
         path: |
           ${{ runner.temp }}/completed_images/*.img.gz
-          ${{ runner.temp }}/completed_images/*.img.gz.part
+          ${{ runner.temp }}/completed_images/*.img.gz.part*
           ${{ runner.temp }}/completed_images/*.img.gz.sha256
-          ${{ runner.temp }}/completed_images/*.img.gz.part.sha256
+          ${{ runner.temp }}/completed_images/*.img.gz.part*.sha256

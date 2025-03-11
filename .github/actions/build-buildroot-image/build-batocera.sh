@@ -90,7 +90,7 @@ FILE_SIZE=$(stat -c%s "../completed_images/$PSPI_IMAGE_NAME")
 if [ $FILE_SIZE -gt $((2000*1024*1024)) ]; then
   echo "Image is larger than 2GB. Splitting..."
   cd ../completed_images
-  split -b 1500M "$PSPI_IMAGE_NAME" "$PSPI_IMAGE_NAME.part"
+  split -d -b 1500M "$PSPI_IMAGE_NAME" "$PSPI_IMAGE_NAME.part"
   rm "$PSPI_IMAGE_NAME"
 fi
 
