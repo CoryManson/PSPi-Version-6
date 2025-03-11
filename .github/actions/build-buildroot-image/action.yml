@@ -107,7 +107,7 @@ runs:
         name: v${{ inputs.version }}
         body_path: .github/workflows/RELEASE_FORMAT.txt
         draft: true
-        fail_on_unmatched_files: true
+        fail_on_unmatched_files: false
         files: |
           ${{ runner.temp }}/completed_images/*.img.gz
           ${{ runner.temp }}/completed_images/*.img.gz.part
