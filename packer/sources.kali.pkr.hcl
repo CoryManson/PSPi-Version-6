@@ -1,4 +1,4 @@
-source "arm" "kali_zero2_armhf" {
+source "cross" "kali_zero2_armhf" {
   file_urls             = ["https://kali.download/arm-images/kali-2024.4/kali-linux-2024.4-raspberry-pi-zero-2-w-armhf.img.xz"]
   file_checksum         = "8424419091b76a062263762fb687cf6a41ee037d6d3dfb2367bb929270073275"
   file_checksum_type    = "sha256"
@@ -36,7 +36,7 @@ source "arm" "kali_zero2_armhf" {
   qemu_binary_destination_path = "/usr/bin/qemu-arm-static"
 }
 
-source "arm" "kali_cm4_arm64" {
+source "cross" "kali_cm4_arm64" {
   file_urls             = ["https://kali.download/arm-images/kali-2024.4/kali-linux-2024.4-raspberry-pi-arm64.img.xz"]
   file_checksum         = "2862b309deb2d4bbdc6f8924f1ba26f67863df5c6c4a9bbfbbb5afa0ce368a4c"
   file_checksum_type    = "sha256"
