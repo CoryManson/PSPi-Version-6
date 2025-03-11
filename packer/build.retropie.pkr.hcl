@@ -113,8 +113,8 @@ build {
 
   # Upload retropie service
   provisioner "file" {
-    source = "${path.root}/scripts/installers/install-retropie.sh"
-    destination = "/usr/local/bin/install-retropie.sh"
+    source = "${path.root}/scripts/installers/retropie.service"
+    destination = "/etc/systemd/system/install-retropie.service"
   }
 
   # Enable retropie service
