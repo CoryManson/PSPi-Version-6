@@ -123,7 +123,8 @@ build {
     expect_disconnect = true
     inline            = [
       "echo 'Enable RetroPie Service'", 
-      "systemctl enable install-retropie.service"
+      "systemctl enable install-retropie.service",
+      "chmod +x /usr/local/bin/install-retropie.sh"
     ]
   }
 
