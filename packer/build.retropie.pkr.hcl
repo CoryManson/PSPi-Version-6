@@ -121,7 +121,7 @@ build {
   provisioner "file" {
     source = "${path.root}/scripts/installers/retropie.service"
     destination = "/etc/systemd/system/retropie.service"
-  }'
+  }
 
   # Enable retropie service
   provisioner "shell" {
