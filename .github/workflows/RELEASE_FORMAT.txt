@@ -13,9 +13,11 @@
 
 ### RetroPie
 
-This RetroPie image will build/install RetroPie from https://github.com/RetroPie/RetroPie-Setup
+This PiOS Aarch64 RetroPie image will build/install RetroPie core packages from https://github.com/RetroPie/RetroPie-Setup. This image is recommended for advanced users only. To install additional packages/cores, retropie-setup is located at `/opt/RetroPie-Setup/retropie_setup.sh` 
 
-The image should be flashed with Raspberry Pi Imager with WiFi customisations completed. Upon connecting to your network, RetroPie will install. This will take a LONG time (Upwards of an hour) make sure your PSPi is charging.
+If you are not an advanced user and would just like a standard RetroPie installation, use the non PiOS retropie images.
+
+The image should be flashed with Raspberry Pi Imager with WiFi customisations completed. Upon connecting to your network, RetroPie will install. This will take a LONG time (Upwards of an hour) make sure your PSPi is charging.`
 
 [How to SSH with RetroPie](https://retropie.org.uk/docs/SSH/)
 
@@ -61,7 +63,6 @@ This image does not support customisations via Raspberry Pi Imager
 
 Username: `root`  
 Password: `recalboxroot`
-
 
 ### Raspberry Pi OS
 

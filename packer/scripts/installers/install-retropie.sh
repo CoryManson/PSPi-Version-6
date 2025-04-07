@@ -111,3 +111,4 @@ if ! is_step_complete "gzdoom"; then
 fi
 
 sudo systemctl disable install-retropie.service
+sudo reboot
