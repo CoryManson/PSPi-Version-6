@@ -1,7 +1,7 @@
 [Unit]
 Description=Install RetroPie on first boot
 Wants=network-online.target
-After=network-online.target
+After=network-online.target default.target
 
 [Service]
 Type=oneshot
