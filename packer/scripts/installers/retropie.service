@@ -1,12 +1,11 @@
 [Unit]
-Description=Install RetroPie on first boot
+Description=Manage Retropie Installation
 Wants=network-online.target
 After=network-online.target default.target
 
 [Service]
 Type=oneshot
-User=%u
-ExecStart=/usr/bin/sudo /usr/local/bin/install-retropie.sh
+ExecStart=/usr/local/bin/install-retropie.sh
 StandardOutput=journal+console
 StandardError=journal+console
 RemainAfterExit=yes

@@ -120,18 +120,13 @@ build {
   # Upload retropie service
   provisioner "file" {
     source = "${path.root}/scripts/installers/retropie.service"
-    destination = "/etc/systemd/system/install-retropie.service"
+    destination = "/etc/systemd/system/retropie.service"
   }
 
-  # Enable retropie service
-  provisioner "shell" {
-    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    expect_disconnect = true
-    inline            = [
-      "echo 'Enable RetroPie Service'", 
-      "systemctl enable install-retropie.service",
-      "chmod +x /usr/local/bin/install-retropie.sh"
-    ]
+  # Upload rc.local
+  provisioner "file" {
+    source = "${path.root}/scripts/installers/rc.local"
+    destination = "/etc/rc.local"
   }
 
   # Reboot

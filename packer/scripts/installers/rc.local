@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Ensure rc.local is executed as a script
+set -e
+
+# Dynamically determine the username (assuming only one user in /home)
+USER_HOME=$(eval echo ~$(ls /home | head -n 1))
+USER_NAME=$(basename "$USER_HOME")
+
+# Check if the user directory exists
+if [ -d "$USER_HOME" ]; then
+    # Check if the service is already installed
+    if [ ! -f "$USER_HOME/.config/systemd/user/retropie.service" ]; then
+        # Create the systemd user directory if it doesn't exist
+        mkdir -p "$USER_HOME/.config/systemd/user/"
+
+        # Move the retropie.service file to the user's systemd directory
+        mv /etc/systemd/system/retropie.service "$USER_HOME/.config/systemd/user/"
+
+        # Set the correct ownership and permissions for the service file
+        chown -R "$USER_NAME:$USER_NAME" "$USER_HOME/.config/systemd/user/"
+        chmod 644 "$USER_HOME/.config/systemd/user/retropie.service"
+
+        # Enable and start the service for the user
+        sudo -u "$USER_NAME" systemctl --user daemon-reload
+        sudo -u "$USER_NAME" systemctl --user enable retropie.service
+        sudo -u "$USER_NAME" systemctl --user start retropie.service
+    fi
+fi
+
+exit 0

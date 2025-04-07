@@ -141,7 +141,7 @@ fi
 
 # Install RetroPie cores
 # Load cores from configuration file
-CORES=$(grep -oP '(?<="|\[)[^\[\]"#,]+(?="|\])' /boot/firmware/retropie.conf)
+CORES=$(grep -oP '^\s*"[^"]+"(?=\s*#|$)' /boot/firmware/retropie.conf | tr -d '"')
 
 for CORE in $CORES; do
     if ! is_step_complete "install_$CORE"; then
@@ -150,10 +150,6 @@ for CORE in $CORES; do
         CHANGES_MADE=true
     fi
 done
-
-# Replace "/root/" with the home directory of the current user in the file /etc/emulationstation/es_systems.cfg
-USER_HOME=$(eval echo ~$USER)
-sudo sed -i "s|/root/|$USER_HOME/|g" /etc/emulationstation/es_systems.cfg
 
 # Reboot only if changes were made
 if [ "$CHANGES_MADE" = true ]; then
