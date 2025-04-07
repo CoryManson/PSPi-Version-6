@@ -52,6 +52,12 @@ build {
     destination = "/boot/firmware/pspi.conf"
   }
 
+  # Upload retropie.conf
+  provisioner "file" {
+    source = "${path.root}/../rpi/configs/retropie/retropie.conf"
+    destination = "/boot/firmware/retropie.conf"
+  }  
+
   # Upload overlays
   provisioner "file" {
     source = "${path.root}/../rpi/overlays/"
