@@ -20,7 +20,11 @@ sudo git clone --depth=1 https://github.com/RetroPie/RetroPie-Setup.git
 cd RetroPie-Setup
 sudo chmod +x /opt/RetroPie-Setup/retropie_packages.sh
 
-sudo /opt/RetroPie-Setup/retropie_packages.sh setup basic_install
+# sudo /opt/RetroPie-Setup/retropie_packages.sh setup basic_install
+sudo /opt/RetroPie-Setup/retropie_packages.sh retroarch
+sudo /opt/RetroPie-Setup/retropie_packages.sh emulationstation
+sudo /opt/RetroPie-Setup/retropie_packages.sh retropiemenu
+sudo /opt/RetroPie-Setup/retropie_packages.sh runcommand
 sudo /opt/RetroPie-Setup/retropie_packages.sh samba depends
 sudo /opt/RetroPie-Setup/retropie_packages.sh samba install_shares
 sudo /opt/RetroPie-Setup/retropie_packages.sh splashscreen default
