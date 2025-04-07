@@ -123,12 +123,6 @@ build {
     destination = "/etc/systemd/system/retropie.service"
   }
 
-  # Upload rc.local
-  provisioner "file" {
-    source = "${path.root}/scripts/installers/rc.local"
-    destination = "/etc/rc.local"
-  }
-
   # Reboot
   provisioner "shell" {
     execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
