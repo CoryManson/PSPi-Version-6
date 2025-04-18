@@ -1,9 +1,11 @@
 #!/bin/bash -e
 ################################################################################
 ##  File:  install-pspi6.sh
-##  Desc: This script is used to install Retropie onto a PiOS Aarch64 image. It contains the necessary installation steps and dependencies required for the installation process.
-##  https://retropie.org.uk/docs/Manual-Installation/
-##  https://www.youtube.com/watch?v=PAePvz6YSWo
+##  Desc:  This script is used to install Retropie onto a PiOS Aarch64 image.
+##         It contains the necessary installation steps and dependencies 
+##         required for the installation process.
+##  Links: https://retropie.org.uk/docs/Manual-Installation/
+##         https://www.youtube.com/watch?v=PAePvz6YSWo
 ################################################################################
 set -x
 
@@ -13,178 +15,52 @@ LOG_FILE="/var/log/install-retropie-$(date +%Y%m%d%H%M%S).log"
 # Redirect all output (stdout and stderr) to the log file
 exec > >(tee -a "$LOG_FILE") 2>&1
 
-# Add a file to track installation progress
-PROGRESS_FILE="/opt/retropie_installation_progress"
-
-# Function to check if a step is complete
-is_step_complete() {
-    grep -q "$1" "$PROGRESS_FILE" 2>/dev/null
-}
-
-# Function to mark a step as complete
-mark_step_complete() {
-    echo "$1" >> "$PROGRESS_FILE"
-}
-
-# Function to handle step failure
-handle_failure() {
-    echo "Step failed: $1. Rebooting..."
-    sleep 60
-    reboot
-}
-
-# Ensure the progress file exists
-touch "$PROGRESS_FILE"
-chmod 666 "$PROGRESS_FILE"
-
 # Create user "pi" if it doesn't exist
 if ! id -u pi > /dev/null 2>&1; then
-    useradd -m -s /bin/bash pi || handle_failure "create_user_pi"
-    echo "pi:raspberry" | chpasswd || handle_failure "set_password_pi"
-    usermod -aG sudo pi || handle_failure "add_pi_to_sudo"
+    useradd -m -s /bin/bash pi || { echo "Failed to create user pi"; exit 1; }
+    echo "pi:raspberry" | chpasswd || { echo "Failed to set password for pi"; exit 1; }
+    usermod -aG sudo pi || { echo "Failed to add pi to sudo group"; exit 1; }
 fi
 
 # Switch to user "pi"
 su - pi <<'EOF'
 
-# Re-define functions in the subshell
-is_step_complete() {
-    grep -q "$1" "$PROGRESS_FILE" 2>/dev/null
-}
+    # Update and upgrade system packages
+    sudo apt update
+    sudo apt upgrade -y
 
-mark_step_complete() {
-    echo "$1" >> "$PROGRESS_FILE"
-}
+    # Install required dependencies
+    sudo apt install git lsb-release -y
 
-handle_failure() {
-    echo "Step failed: $1. Rebooting..."
-    sleep 60
-    sudo reboot
-}
-
-# Variable to track if any changes were made
-CHANGES_MADE=false
-
-# Update and upgrade system
-if ! is_step_complete "update_upgrade"; then
-    sudo apt update || handle_failure "update"
-    sudo apt upgrade -y || handle_failure "upgrade"
-    mark_step_complete "update_upgrade"
-    CHANGES_MADE=true
-fi
-
-# Install dependencies
-if ! is_step_complete "install_dependencies"; then
-    sudo apt install git lsb-release -y || handle_failure "install_dependencies"
-    mark_step_complete "install_dependencies"
-    CHANGES_MADE=true
-fi
-
-# Install RetroPie
-if ! is_step_complete "clone_retropie"; then
-    cd /opt || handle_failure "change_directory"
+    # Install RetroPie
+    cd /opt
     if [ ! -d "/opt/RetroPie-Setup" ]; then
-        git clone --depth=1 https://github.com/RetroPie/RetroPie-Setup.git || handle_failure "clone_retropie"
-    fi
-    mark_step_complete "clone_retropie"
-    CHANGES_MADE=true
-fi
-
-if ! is_step_complete "setup_retropie"; then
-    cd /opt/RetroPie-Setup || handle_failure "change_directory_retropie"
-    sudo chmod +x /opt/RetroPie-Setup/retropie_packages.sh || handle_failure "chmod_retropie_packages"
-
-    # Break down each retropie_packages.sh command into its own step
-    if ! is_step_complete "install_retroarch"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh retroarch || handle_failure "install_retroarch"
-        mark_step_complete "install_retroarch"
-        CHANGES_MADE=true
+        sudo git clone --depth=1 https://github.com/RetroPie/RetroPie-Setup.git
     fi
 
-    if ! is_step_complete "install_emulationstation"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh emulationstation || handle_failure "install_emulationstation"
-        mark_step_complete "install_emulationstation"
-        CHANGES_MADE=true
-    fi
+    cd /opt/RetroPie-Setup || { echo "Failed to change directory to RetroPie-Setup"; exit 1; }
+    sudo chmod +x /opt/RetroPie-Setup/retropie_packages.sh || { echo "Failed to set executable permissions on retropie_packages.sh"; exit 1; }
 
-    if ! is_step_complete "install_retropiemenu"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh retropiemenu || handle_failure "install_retropiemenu"
-        mark_step_complete "install_retropiemenu"
-        CHANGES_MADE=true
-    fi
-
-    if ! is_step_complete "install_runcommand"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh runcommand || handle_failure "install_runcommand"
-        mark_step_complete "install_runcommand"
-        CHANGES_MADE=true
-    fi
-
-    if ! is_step_complete "install_samba_depends"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh samba depends || handle_failure "install_samba_depends"
-        mark_step_complete "install_samba_depends"
-        CHANGES_MADE=true
-    fi
-
-    if ! is_step_complete "install_samba_shares"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh samba install_shares || handle_failure "install_samba_shares"
-        mark_step_complete "install_samba_shares"
-        CHANGES_MADE=true
-    fi
-
-    if ! is_step_complete "install_splashscreen_default"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh splashscreen default || handle_failure "install_splashscreen_default"
-        mark_step_complete "install_splashscreen_default"
-        CHANGES_MADE=true
-    fi
-
-    if ! is_step_complete "enable_splashscreen"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh splashscreen enable || handle_failure "enable_splashscreen"
-        mark_step_complete "enable_splashscreen"
-        CHANGES_MADE=true
-    fi
-
-    if ! is_step_complete "install_bashwelcometweak"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh bashwelcometweak || handle_failure "install_bashwelcometweak"
-        mark_step_complete "install_bashwelcometweak"
-        CHANGES_MADE=true
-    fi
-
-    if ! is_step_complete "install_joy2key"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh joy2key || handle_failure "install_joy2key"
-        mark_step_complete "install_joy2key"
-        CHANGES_MADE=true
-    fi
+    # Install RetroPie components
+    sudo /opt/RetroPie-Setup/retropie_packages.sh retroarch || { echo "Failed to install retroarch"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh emulationstation || { echo "Failed to install emulationstation"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh retropiemenu || { echo "Failed to install retropiemenu"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh runcommand || { echo "Failed to install runcommand"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh samba depends || { echo "Failed to install samba dependencies"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh samba install_shares || { echo "Failed to install samba shares"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh splashscreen default || { echo "Failed to install default splashscreen"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh splashscreen enable || { echo "Failed to enable splashscreen"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh bashwelcometweak || { echo "Failed to install bashwelcometweak"; exit 1; }
+    sudo /opt/RetroPie-Setup/retropie_packages.sh joy2key || { echo "Failed to install joy2key"; exit 1; }
 
     # Enable autostart for EmulationStation
-    if ! is_step_complete "enable_autostart"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh autostart enable || handle_failure "enable_autostart"
+    sudo /opt/RetroPie-Setup/retropie_packages.sh autostart enable || { echo "Failed to enable autostart"; exit 1; }
+    sudo sed -i '3i\    sleep 3\n    while pgrep -f "/usr/local/bin/install-retropie.sh" > /dev/null; do\n      sleep 5\n    done' /etc/profile.d/10-retropie.sh
 
-        # Update the autostart.sh script to wait for all processes running /usr/local/bin/install-retropie.sh to end
-        sudo sed -i '3i\    sleep 3\n    while pgrep -f "/usr/local/bin/install-retropie.sh" > /dev/null; do\n      sleep 5\n    done' /etc/profile.d/10-retropie.sh
+    # Install RetroPie cores
+    PACKAGES=$(grep -oP '^\s*"[^"]+"(?=\s*#|$)' /boot/firmware/retropie.conf | tr -d '"')
 
-        mark_step_complete "enable_autostart"
-        sudo reboot
-    fi
-
-    mark_step_complete "setup_retropie"
-    CHANGES_MADE=true
-fi
-
-# Install RetroPie cores
-# Load cores from configuration file
-CORES=$(grep -oP '^\s*"[^"]+"(?=\s*#|$)' /boot/firmware/retropie.conf | tr -d '"')
-
-for CORE in $CORES; do
-    if ! is_step_complete "install_$CORE"; then
-        sudo /opt/RetroPie-Setup/retropie_packages.sh "$CORE" || handle_failure "install_$CORE"
-        mark_step_complete "install_$CORE"
-        CHANGES_MADE=true
-    fi
-done
-
-# Reboot only if changes were made
-if [ "$CHANGES_MADE" = true ]; then
-    sudo reboot
-fi
-
+    for PACKAGE in $PACKAGES; do
+        sudo /opt/RetroPie-Setup/retropie_packages.sh "$PACKAGE" || { echo "Failed to install $PACKAGE"; exit 1; }
+    done
 EOF
