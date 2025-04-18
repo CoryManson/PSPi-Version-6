@@ -44,6 +44,11 @@ if ! id -u pi > /dev/null 2>&1; then
     usermod -aG sudo pi || handle_failure "add_pi_to_sudo"
 fi
 
+# Export functions to make them available in the subshell
+export -f is_step_complete
+export -f mark_step_complete
+export -f handle_failure
+
 # Switch to user "pi"
 su - pi <<'EOF'
 
