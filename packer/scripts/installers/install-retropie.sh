@@ -37,6 +37,16 @@ handle_failure() {
 touch "$PROGRESS_FILE"
 chmod 666 "$PROGRESS_FILE"
 
+# Create user "pi" if it doesn't exist
+if ! id -u pi > /dev/null 2>&1; then
+    useradd -m -s /bin/bash pi || handle_failure "create_user_pi"
+    echo "pi:raspberry" | chpasswd || handle_failure "set_password_pi"
+    usermod -aG sudo pi || handle_failure "add_pi_to_sudo"
+fi
+
+# Switch to user "pi"
+su - pi <<'EOF'
+
 # Variable to track if any changes were made
 CHANGES_MADE=false
 
@@ -161,3 +171,5 @@ done
 if [ "$CHANGES_MADE" = true ]; then
     reboot
 fi
+
+EOF

@@ -56,7 +56,7 @@ build {
   provisioner "file" {
     source = "${path.root}/../rpi/configs/retropie/retropie.conf"
     destination = "/boot/firmware/retropie.conf"
-  }  
+  }
 
   # Upload overlays
   provisioner "file" {
@@ -68,7 +68,7 @@ build {
   provisioner "file" {
     source = "${path.root}/../rpi/libraries/raspios/"
     destination = "/usr/lib/"
-  }   
+  }
 
   # Upload drivers
   provisioner "file" {
@@ -111,6 +111,13 @@ build {
     }
   }
 
+  # Reboot
+  provisioner "shell" {
+    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    expect_disconnect = true
+    inline            = ["echo 'Reboot VM'", "reboot"]
+  }
+
   # Upload retropie installer
   provisioner "file" {
     source = "${path.root}/scripts/installers/install-retropie.sh"
@@ -128,11 +135,19 @@ build {
     execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     expect_disconnect = true
     inline            = [
-      "echo 'Enable RetroPie Service'", 
+      "echo 'Enable RetroPie Service'",
       "systemctl enable retropie.service",
       "chmod +x /usr/local/bin/install-retropie.sh"
     ]
-  }  
+  }
+
+  # Install retropie
+  provisioner "shell" {
+    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    scripts = [
+      "${path.root}scripts/installers/install-retropie.sh"
+    ]
+  }
 
   # Reboot
   provisioner "shell" {
