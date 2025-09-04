@@ -1,2 +1,141 @@
+# OS Image Files
+*.img
+*.iso
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tar.xz
+*.tar.bz2
+*.rar
 
-*.db
+# Build artifacts
+build/
+dist/
+output/
+tmp/
+temp/
+cache/
+
+# Log files
+*.log
+logs/
+
+# Configuration files with secrets
+*.env
+.env.*
+secrets/
+config/secrets/
+
+# Azure DevOps local files
+.vscode/settings.json
+.azure/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Node.js (if using Node-based build tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# Python (if using Python build scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary mount points
+mnt/
+mount/
+
+# SSH keys and certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Large media files (unless specifically needed)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.flv
+*.wmv
+*.wav
+*.mp3
+*.flac
+
+# Package manager lock files (can be controversial, adjust as needed)
+package-lock.json
+yarn.lock
+Pipfile.lock

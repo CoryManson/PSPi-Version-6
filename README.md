@@ -1,84 +1,105 @@
-# PSPi 6: Raspberry Pi in a PSP
+# PSPi 6 Community OS Images
 
-![PSPi](https://othermod.com/wp-content/uploads/IMG_8727.jpg)
+Community-built operating system images for the PSPi 6 handheld device.
 
-This is my passion project that transforms the classic PSP 1000 into a modern handheld using a Raspberry Pi. This page documents the combination of hardware and software development.
+## 🎯 About This Repository
 
-## 🎮 What is PSPi 6?
+This repository contains **community-developed OS images** specifically built for the PSPi 6 device. These images are created and maintained independently by community members to provide additional options and customizations for PSPi 6 users.
 
-PSPi 6 is a custom circuit board that replaces the mainboard of a PSP 1000, allowing you to use a Raspberry Pi as its brain. This means you can:
+> **Note**: This is not the official PSPi 6 repository. For official hardware information, drivers, and documentation, visit [othermod's PSPi-Version-6 repository](https://github.com/othermod/PSPi-Version-6).
 
-- Play retro games and emulators
-- Run full Linux distributions and use it as a portable computer
-- Use most software that works on a Raspberry Pi
+## 🔄 Development & Build Process
 
-## ✨ Key Features
+OS images are built using automated pipelines on Azure DevOps, split across two specialized repositories:
 
-- **Display**: High quality [800x480 LCD](https://othermod.com/product/4-3-800x480-lcd/) with adjustable brightness
-- **Power Management**: Efficient charging, real-time battery monitoring, and power-saving modes
-- **Audio**: Play audio through the PSP speakers or headphones
-  - Control volume and mute using the PSP buttons
-  - *Note: The Pi Zero and CM4 Carrier give mono audio. The Universal Carrier is planned to output stereo*
-- **Controls**: All original PSP buttons and joystick are used
-  - The board allows for two extra buttons and an extra joystick
-- **Indicators**: LED indicators and on-screen display for system status
-- **Open Design**: Customizable open-source hardware under Creative Commons license
+- **[pspi-v6-driver-build](https://dev.azure.com/CoryManson/PSPi/_git/pspi-v6-driver-build)**: Driver compilation and hardware interface development
+- **[pspi-v6-os-build](https://dev.azure.com/CoryManson/PSPi/_git/pspi-v6-os-build)**: OS image creation, customization, and distribution packaging
 
-For a comprehensive list of features and technical details, please visit the [Features Wiki Page](https://github.com/othermod/PSPi-Version-6/wiki/1.-Features).
+This GitHub repository serves as the distribution point for the final, tested images.
 
-## 🧩 Compatibility
+## 💿 Available OS Images
 
-- **PSP Model**: Works exclusively with PSP 1000 series. Visit the [PSP Compatibility Wiki Page](https://github.com/othermod/PSPi-Version-6/wiki/2.-PSP-Compatibility) page for more details
-- **Raspberry Pi**:
-  - Fits Raspberry Pi Zero, Zero 2W, and CM4 (with CM4 Carrier board)
-  - Electrically compatible with all 40-pin Raspberry Pis, but only the Zero/Zero 2 fit into the shell
-  - The [Raspberry Pi Compatibility Wiki Page](https://github.com/othermod/PSPi-Version-6/wiki/3.-Raspberry-Pi-Compatibility) will help you decide which Raspberry Pi model you want to use.
-- **Operating Systems**: RetroPie, Lakka, Ubuntu, Raspberry Pi OS, Batocera, Kali, and more!
+Check the [**Releases**](https://github.com/CoryManson/PSPi-Version-6/releases) section for:
 
-## 🚀 Getting Started
+- 🎮 **RetroPie** - Optimized for retro gaming with PSPi 6 drivers pre-installed
+- 🎯 **Lakka** - Lightweight RetroArch-based gaming OS
+- 🛡️ **Kali Linux** - Security-focused distribution for PSPi 6
+- 🐧 **Raspberry Pi OS** - Full desktop experience with PSPi 6 support
+- � **Batocera** - Gaming-focused OS with extensive emulation support
+- 🕹️ **Recalbox** - User-friendly retro gaming distribution
+- 📦 **Custom builds** - Specialized images with unique configurations
 
-- **Gather Components**: Check the [Components Required Wiki Page](https://github.com/othermod/PSPi-Version-6/wiki/4.-Components-Required) for a full list.
-- **Assembly**: Follow the guides on the [Board Installation Wiki](https://github.com/othermod/PSPi-Version-6/wiki/5.-Board-Installation). Video tutorials are available, and a full guide is in the works.
-- **Software Setup**: Use the [Operating Systems Wiki Page](https://github.com/othermod/PSPi-Version-6/wiki/6.-Operating-Systems) to install your chosen OS.
+Each image includes:
+- Pre-configured PSPi 6 drivers
+- Optimized settings for the hardware
+- Community-contributed enhancements
+- Detailed installation instructions
 
-Having issues? Visit the [Troubleshooting Wiki Page](https://github.com/othermod/PSPi-Version-6/wiki/Troubleshooting).
+## � Quick Start
 
-## 📁 Project Resources
+1. **Download** the latest image from [Releases](https://github.com/CoryManson/PSPi-Version-6/releases)
+2. **Flash** the image to a microSD card using tools like Raspberry Pi Imager or Balena Etcher
+3. **Insert** the SD card into your PSPi 6 device
+4. **Boot** and enjoy!
 
-- **[Raspberry Pi Code](https://github.com/othermod/PSPi-Version-6/tree/main/drivers)**: Drivers and software for the Raspberry Pi.
-- **[Atmega Firmware](https://github.com/othermod/PSPi-Version-6/tree/main/atmega)**: Code for the Atmega8a microcontroller that manages power and inputs.
-- **[PCB and Schematics](https://github.com/othermod/PSPi-Version-6/tree/main/boards)**: Hardware design files for those who want to manufacture boards modify the design.
+## 📋 Requirements
 
-## 🛒 How to Get a PSPi 6
+- PSPi 6 device (see [official compatibility guide](https://github.com/othermod/PSPi-Version-6/wiki/2.-PSP-Compatibility))
+- Compatible Raspberry Pi (Zero, Zero 2W, or CM4)
+- microSD card (16GB+ recommended)
+- PSPi 6 drivers (pre-installed in these images)
 
-1. **Buy a Ready-Made Board**: Available now at [othermod.com](https://othermod.com/product/pspi-6-board/). Perfect for those who want more of a plug-and-play experience.
+## 🔧 Image Features
 
-2. **Make Your Own**: You can use the provided PCB files to manufacture your own board:
-   - Download the design files from the [boards folder](https://github.com/othermod/PSPi-Version-6/tree/main/boards).
-   - Send the files to a PCB manufacturer of your choice. I use [JLCPCB](https://jlcpcb.com/?from=othermod) for every board I sell.
-   - Source the components and assemble the board yourself.
+All community images include:
 
-   Note: This option requires advanced skills in electronics and soldering.
+- ✅ PSPi 6 drivers pre-installed and configured
+- ✅ Optimized performance settings
+- ✅ Power management configured
+- ✅ Display and audio properly mapped
+- ✅ Control input fully functional
+- ✅ Battery monitoring enabled
 
-## 🚧 Project Status
+## 🐛 Support & Issues
 
-PSPi 6 board development is complete and boards are shipping. I do sometimes make minor changes to the board, but nothing that affects the important features. I'm continually improving documentation and working on guides to help users get the most out of their PSPi 6.
+### For OS Image Issues:
+- Create an issue in this repository for problems specific to these community images
+- Include your PSPi 6 model, Raspberry Pi version, and detailed error description
 
-## 🤝 Community and Contributions
+### For Hardware/Driver Issues:
+- Visit the [official PSPi 6 repository](https://github.com/othermod/PSPi-Version-6)
+- Check the [official troubleshooting guide](https://github.com/othermod/PSPi-Version-6/wiki/Troubleshooting)
 
-While PSPi 6 is primarily my personal project, I welcome contributions from the community. Whether you're a coder, designer, or just have great ideas, your input can help make PSPi 6 even better. Here's how you can contribute:
+### For General Support:
+- Join the [PSPi Discord community](https://discord.gg/V96c3JC)
 
-- Report bugs or suggest features
-- Join the Discord and share your mods or help others with troubleshooting.
-- Help improve documentation and guides
-- Spread the word about the PSPi 6!
+## 🤝 Contributing
 
-## 📢 Stay Connected
+Contributions to improve these community images are welcome! You can help by:
 
-- [**Discord**](https://discord.gg/V96c3JC): Join the community for discussions, support, and sharing your builds.
-- [**YouTube**](https://youtube.com/othermod): Subscribe for video tutorials and project updates.
-- [**Contact**](https://linktr.ee/othermod): Reach me on various platforms.
+- Testing images and reporting bugs
+- Suggesting optimizations or new features
+- Contributing to build scripts and automation
+- Creating documentation and guides
+- Sharing your custom configurations
 
-## 📜 License
+## 📖 Documentation
 
-The PSPi 6 hardware design is open-source under the Creative Commons (CC BY-SA) license. You're free to share and adapt the material, as long as you give appropriate credit.
+- [Official PSPi 6 Wiki](https://github.com/othermod/PSPi-Version-6/wiki) - Complete hardware and setup guide
+- [Features Overview](https://github.com/othermod/PSPi-Version-6/wiki/1.-Features) - What PSPi 6 can do
+- [Installation Guide](https://github.com/othermod/PSPi-Version-6/wiki/5.-Board-Installation) - Hardware assembly
+- [OS Setup Guide](https://github.com/othermod/PSPi-Version-6/wiki/6.-Operating-Systems) - Software configuration
+
+## ⚖️ License & Credits
+
+- These community OS images are built upon open-source operating systems and PSPi 6 drivers
+- PSPi 6 hardware design by [othermod](https://github.com/othermod) under Creative Commons (CC BY-SA) license
+- Community images are provided under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)
+- Respect all upstream licenses and attribution requirements
+
+## 🔗 Related Links
+
+- [Official PSPi 6 Project](https://github.com/othermod/PSPi-Version-6) - Hardware, drivers, and official documentation
+- [PSPi 6 Hardware](https://othermod.com/product/pspi-6-board/) - Purchase official boards
+- [Community Discord](https://discord.gg/V96c3JC) - Support and discussions
+- [othermod YouTube](https://youtube.com/othermod) - Video tutorials and updates
