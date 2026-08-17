@@ -1,3 +1,14 @@
+> [!IMPORTANT]
+> **⚠️ Repository Archived**
+> 
+> Community-built PSPi 6 images are no longer maintained. This project has been archived
+> in favor of the official images now published by othermod:
+> https://github.com/othermod/PSPi-Version-6/releases
+>
+> Thank you to everyone who contributed, tested builds, and helped improve the PSPi 6
+> experience.
+
+
 # PSPi 6 Community OS Images
 
 Community-built operating system images for the PSPi 6 handheld device.
